@@ -27,9 +27,7 @@ public class MenuController {
     @GetMapping("/list")
     @ResponseBody
     public List<Menu> list(Menu menu) {
-        //List<Menu> menuList = menuService.selectMenuList(menu);
         List<Menu> menuList = menuService.selectMenuList(menu);
-
         return menuList;
     }
 
@@ -44,7 +42,6 @@ public class MenuController {
         pageSize = pageSize == null ? 10 : pageSize;
         List<Menu> menuList = menuService.findMenuListByPage(pageNum,pageSize);
         return menuList;
-
     }
 
 }
