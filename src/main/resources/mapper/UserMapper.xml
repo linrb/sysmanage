@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lin.sysmanage.dao.UserMapper">
+    <resultMap id="BaseResultMap" type="com.lin.sysmanage.entity.User">
+        <id column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="login_name" property="loginName" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="userMap" type="com.lin.sysmanage.entity.User">
+        <id property="userName" column="userId"/>
+        <result property="userId" column="userName"/>
+        <result column="login_name" property="loginName" jdbcType="VARCHAR"/>
+        <result property="password" column="password"/>
+        <collection property="roles" ofType="com.lin.sysmanage.entity.SysRole">
+            <result column="role_key" property="roleKey"/>
+        </collection>
+    </resultMap>
+
+    <select id="getUserByUserName" parameterType="String" resultMap="userMap">
+       select u.*
+       ,r.role_key
+        from sys_user u
+        LEFT JOIN sys_user_role sr on u.user_id=sr.user_id
+        LEFT JOIN sys_role r on r.role_id=sr.role_id
+        where login_name= #{username}
+    </select>
+
+    <select id="getUserById" resultMap="BaseResultMap">
+    select *
+    from sys_user
+    WHERE user_id = #{userId}
+  </select>
+
+    <select id="getUserList" resultMap="BaseResultMap">
+        select *
+        from sys_user
+        <where>
+            <if test="userName!=null and userName!=''">
+                <!--2、如果where后以and或or开始则会删除and或or-->
+                and user_name like concat(concat('%',#{userName}),'%');
+            </if>
+        </where>
+    </select>
+</mapper>
