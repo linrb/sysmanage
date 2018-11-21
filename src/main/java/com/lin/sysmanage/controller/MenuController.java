@@ -1,6 +1,7 @@
 package com.lin.sysmanage.controller;
 
 import com.lin.sysmanage.aspect.Log;
+import com.lin.sysmanage.cache.RedisUtils;
 import com.lin.sysmanage.entity.Menu;
 import com.lin.sysmanage.service.IMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class MenuController {
 
     @Autowired
     private IMenuService menuService;
+
+    @Autowired
+    private RedisUtils redisUtils;
 
     @RequestMapping("/menuList")
     public String menu() {
@@ -40,7 +44,7 @@ public class MenuController {
 
         pageNum = pageNum == null ? 1 : pageNum;
         pageSize = pageSize == null ? 10 : pageSize;
-        List<Menu> menuList = menuService.findMenuListByPage(pageNum,pageSize);
+        List<Menu> menuList = menuService.findMenuListByPage(pageNum, pageSize);
         return menuList;
     }
 
