@@ -3,8 +3,8 @@ package com.lin.sysmanage.controller;
 import com.lin.sysmanage.aspect.Log;
 import com.lin.sysmanage.entity.User;
 import com.lin.sysmanage.service.IUserService;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,9 +31,10 @@ public class UserController {
         return userList;
     }
 
+    @Cacheable(value = "user", key = "#userId", unless = "#result==null")
     @Log(descrption = "查询用户信息",actionType = "4")
     @ResponseBody
-    @RequestMapping(value = "/getUserById", produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/getUserById")
     public User getUserById(Integer userId) {
         return userService.getUserById(userId);
     }

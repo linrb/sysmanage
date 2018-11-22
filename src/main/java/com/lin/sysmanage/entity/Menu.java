@@ -1,9 +1,10 @@
 package com.lin.sysmanage.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Menu {
+public class Menu implements Serializable {
     /**
      * 菜单ID
      */
