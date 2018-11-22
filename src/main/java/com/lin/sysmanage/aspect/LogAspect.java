@@ -2,24 +2,30 @@ package com.lin.sysmanage.aspect;
 
 
 import com.alibaba.fastjson.JSON;
+import com.lin.sysmanage.utils.Log4jUtils;
+import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 
 @Aspect
 @Component
 public class LogAspect {
-    private static final Logger log = LoggerFactory.getLogger(LogAspect.class);
+    //private static final Logger log = LoggerFactory.getLogger(LogAspect.class);
 
+    private static Logger log = Log4jUtils.getLog(LogAspect.class);
     /**
      * 切入点
      */
@@ -48,7 +54,7 @@ public class LogAspect {
             log.info("方法类型:" + getMthodType(joinPoint));
             log.info("参数:" + jsonParams);
             log.info("请求IP:" + ip);
-            log.info("url ={}", request.getRequestURI());
+            log.info("url ="+ request.getRequestURI());
             // 执行方法
             result = joinPoint.proceed();
         } catch (Throwable e) {
