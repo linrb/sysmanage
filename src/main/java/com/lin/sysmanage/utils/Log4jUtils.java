@@ -1,13 +1,11 @@
 package com.lin.sysmanage.utils;
 
-import org.apache.log4j.FileAppender;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
-import org.apache.log4j.RollingFileAppender;;
+import org.apache.log4j.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+;
 
 public class Log4jUtils {
 
@@ -24,7 +22,7 @@ public class Log4jUtils {
         PatternLayout layout = new PatternLayout();
         layout.setConversionPattern("[%d{yyyy-MM-dd HH:mm:ss}] %p %l : %m%n"); // log的输出形式
         appender.setLayout(layout);
-        appender.setFile("logs/"+getTime("yyyy-MM-dd") + ".log");  // log输出路径
+        appender.setFile("logs/" + getTime("yyyy-MM-dd") + ".log");  // log输出路径
         appender.setEncoding("UTF-8"); // log的字符编码
         appender.setAppend(true);  //日志合并方式： true:在已存在log文件后面追加 false:新log覆盖以前的log
         appender.activateOptions();  // 适用当前配置
@@ -32,6 +30,7 @@ public class Log4jUtils {
         logger.addAppender(appender); // 将新的Appender加到Logger中
         return logger;
     }
+
     private static String getTime(String format) {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         return sdf.format(new Date());

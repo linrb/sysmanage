@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @Cacheable(value = "user", key = "#userId", unless = "#result==null")
-    @Log(descrption = "查询用户信息",actionType = "4")
+    @Log(descrption = "查询用户信息", actionType = "4")
     @ResponseBody
     @RequestMapping(value = "/getUserById")
     public User getUserById(Integer userId) {

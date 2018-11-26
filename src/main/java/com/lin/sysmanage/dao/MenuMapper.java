@@ -1,11 +1,10 @@
 package com.lin.sysmanage.dao;
 
 import com.lin.sysmanage.entity.Menu;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
-@Mapper
+//@Mapper
 public interface MenuMapper {
     /**
      * 查询系统所有菜单（含按钮）

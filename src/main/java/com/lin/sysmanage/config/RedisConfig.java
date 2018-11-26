@@ -51,14 +51,14 @@ public class RedisConfig extends CachingConfigurerSupport {
     public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig();
         redisCacheConfiguration = redisCacheConfiguration.entryTtl(Duration.ofMinutes(1L)) //设置缓存的默认超时时间：1分钟
-            .disableCachingNullValues();             //如果是空值，不缓存
+                .disableCachingNullValues();             //如果是空值，不缓存
         RedisCacheManager.RedisCacheManagerBuilder builder = RedisCacheManager
                 .builder(RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory))
                 .cacheDefaults(redisCacheConfiguration);
         return builder.build();
     }
 
-  //  @Bean
+    //  @Bean
 //    public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
 //        //缓存配置对象
 //        RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig();

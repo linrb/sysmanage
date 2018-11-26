@@ -36,7 +36,7 @@ public interface IMenuService {
      */
     public List<Menu> selectMenuList(Menu menu);
 
-    public  List<Menu> findMenuListByPage(int currentPage, int pageSize);
+    public List<Menu> findMenuListByPage(int currentPage, int pageSize);
 
 
 }

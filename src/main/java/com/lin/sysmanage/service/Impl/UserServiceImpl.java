@@ -17,11 +17,10 @@ public class UserServiceImpl implements IUserService {
     @Override
     public User getUserById(Integer userId) {
 
-       return userMapper.getUserById(userId);
+        return userMapper.getUserById(userId);
     }
 
-    public List<User> getUserList()
-    {
-        return  userMapper.getUserList();
+    public List<User> getUserList() {
+        return userMapper.getUserList();
     }
 }

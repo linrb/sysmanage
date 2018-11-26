@@ -26,6 +26,7 @@ public class LogAspect {
     //private static final Logger log = LoggerFactory.getLogger(LogAspect.class);
 
     private static Logger log = Log4jUtils.getLog(LogAspect.class);
+
     /**
      * 切入点
      */
@@ -54,7 +55,7 @@ public class LogAspect {
             log.info("方法类型:" + getMthodType(joinPoint));
             log.info("参数:" + jsonParams);
             log.info("请求IP:" + ip);
-            log.info("url ="+ request.getRequestURI());
+            log.info("url =" + request.getRequestURI());
             // 执行方法
             result = joinPoint.proceed();
         } catch (Throwable e) {
@@ -81,6 +82,7 @@ public class LogAspect {
         }
         return paramsBuf.toString();
     }
+
     private Map transToMap(Map parameterMap) {
         // 返回值Map
         Map returnMap = new HashMap();
