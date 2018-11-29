@@ -130,6 +130,15 @@
             <version>1.49</version>
         </dependency>
         <!-- pdf处理 end-->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>         
+            <!--optional/scope=true,依赖不会传递，该项目依赖devtools;之后
+               依赖boot项目的项目如果想要使用devtools,需要重新引入-->
+            <optional>true</optional> 
+            <scope>true</scope>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -148,6 +157,10 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <!--fork :  如果没有该项配置，肯呢个devtools不会起作用，即应用不会restart -->
+                <configuration>
+                    <fork>true</fork>
+                </configuration>
             </plugin>
         </plugins>
     </build>

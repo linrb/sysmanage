@@ -21,6 +21,9 @@
           apply the skin class to the body tag so the changes take effect. -->
     <link rel="stylesheet" th:href="@{/adminlte/dist/css/skins/skin-blue.min.css}">
 
+    <link rel="stylesheet" th:href="@{/adminlte/bower_components/bootstrap-datepicker/css/bootstrap-datepicker3.css}">
+    <!-- zTree style -->
+    <link rel="stylesheet" th:href="@{/js/plugins/jquery-ztree/3.5/css/bootstrapStyle/bootstrapStyle.css}">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -235,19 +238,19 @@
 
             <!-- Sidebar Menu -->
             <ul class="sidebar-menu" data-widget="tree">
-                <li class="header">HEADER</li>
+                <li class="header">首页</li>
                 <!-- Optionally, you can add icons to the links -->
-                <li class="active"><a href="/user/index"><i class="fa fa-link"></i> <span>用户管理</span></a></li>
+                <li><a href="/user/index"><i class="fa fa-link"></i> <span>用户管理</span></a></li>
                 <li><a href="/menu/menuList"><i class="fa fa-link"></i> <span>菜单管理</span></a></li>
                 <li class="treeview">
-                    <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
+                    <a href="#"><i class="fa fa-link"></i> <span>系统设置</span>
                         <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="#">Link in level 2</a></li>
-                        <li><a href="#">Link in level 2</a></li>
+                        <li class="active"><a href="/home/main">组织机构</a></li>
+                        <li><a href="#">角色管理</a></li>
                     </ul>
                 </li>
             </ul>
@@ -258,7 +261,98 @@
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
+        <section class="content-header">
+            <h1>
+                部门管理
+                <small>系统管理</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="#">系统管理</a></li>
+                <li class="active">部门管理</li>
+            </ol>
+        </section>
+        <section class="content">
+            <div class="row">
+                <div class="col-lg-3 col-xs-6">
+                    <div class="box small-box">
+                        <ul id="treeDemo" class="ztree"></ul>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-xs-6">
+                    <!--box -->
+                    <div class="box box-primary">
+                        <div class="box-header">
+                            <h3 class="box-title">编辑</h3>
+                        </div>
+                        <div class="box-body">
+                            <!-- Date dd/mm/yyyy -->
+                            <div class="form-group">
+                                <label>时间:</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input type="text" id="datepicker" class="form-control"
+                                           data-inputmask="'alias': 'yyyy-mm-dd'" data-mask>
+                                </div>
+                                <!-- /.input group -->
+                            </div>
+                            <!-- /.form group -->
 
+                            <!-- phone mask -->
+                            <div class="form-group">
+                                <label>电话:</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-phone"></i>
+                                    </div>
+                                    <input type="text" class="form-control" data-inputmask="'mask': ['9999-9999999', '9999-99999999']"
+                                           data-mask>
+                                </div>
+                                <!-- /.input group -->
+                            </div>
+                            <!-- /.form group -->
+
+                            <!-- phone mask -->
+                            <div class="form-group">
+                                <label>手机:</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-phone"></i>
+                                    </div>
+                                    <input type="text" class="form-control"
+                                           data-inputmask="'mask': ['999999999999']"
+                                           data-mask>
+                                </div>
+                                <!-- /.input group -->
+                            </div>
+                            <!-- /.form group -->
+
+                            <!-- IP mask -->
+                            <div class="form-group">
+                                <label>IP地址:</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-laptop"></i>
+                                    </div>
+                                    <input type="text" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
+                                </div>
+                                <!-- /.input group -->
+                            </div>
+                            <!-- /.form group -->
+
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                    <!-- /.box -->
+                </div>
+            </div>
+
+        </section>
     </div>
 
     <!-- /.content-wrapper -->
@@ -358,7 +452,109 @@
 <!-- AdminLTE App -->
 <script th:src="@{/adminlte/dist/js/adminlte.min.js}"></script>
 
+<script type="text/javascript" th:src="@{/js/plugins/jquery-ztree/3.5/js/jquery.ztree.core-3.5.js}"></script>
+<script type="text/javascript" th:src="@{/js/plugins/jquery-ztree/3.5/js/jquery.ztree.excheck-3.5.js}"></script>
+<script type="text/javascript" th:src="@{/js/plugins/jquery-ztree/3.5/js/jquery.ztree.exedit-3.5.js}"></script>
+
+<!-- InputMask -->
+<script th:src="@{/adminlte/plugins/input-mask/jquery.inputmask.js}"></script>
+<script th:src="@{/adminlte/plugins/input-mask/jquery.inputmask.date.extensions.js}"></script>
+<script th:src="@{/adminlte/plugins/input-mask/jquery.inputmask.extensions.js}"></script>
+<script th:src="@{/adminlte/bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js}"></script>
+<script th:src="@{/adminlte/bower_components/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js}"></script>
 <script inline="javascript">
+    var setting = {
+        view: {
+            addHoverDom: addHoverDom,
+            removeHoverDom: removeHoverDom,
+            selectedMulti: false
+        },
+        check: {
+            enable: true
+        },
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        edit: {
+            enable: true
+        }
+    };
+
+    var zNodes = [
+        {id: 1, pId: 0, name: "总公司", open: true},
+        {id: 101, pId: 1, name: "总经办", open: true},
+        {id: 102, pId: 1, name: "总行政部", open: true},
+        {id: 2, pId: 1, name: "分公司一", open: false},
+        {id: 201, pId: 2, name: "行政部"},
+        {id: 202, pId: 2, name: "研发部"},
+        {id: 203, pId: 2, name: "市场部"},
+        {id: 204, pId: 2, name: "产品部"},
+        {id: 208, pId: 2, name: "营运部"},
+        {id: 209, pId: 2, name: "客服部"},
+        {id: 210, pId: 2, name: "采购部"},
+        {id: 211, pId: 2, name: "账务部"},
+
+        {id: 3, pId: 1, name: "分公司二", open: false},
+        {id: 301, pId: 3, name: "研发一部"},
+        {id: 306, pId: 3, name: "产品一部"},
+        {id: 307, pId: 3, name: "营运部"},
+        {id: 308, pId: 3, name: "账务部"},
+
+        {id: 4, pId: 1, name: "分公司三", open: false},
+        {id: 401, pId: 4, name: "营运部"},
+        {id: 402, pId: 4, name: "产品部"},
+        {id: 403, pId: 4, name: "客服部"},
+        {id: 404, pId: 4, name: "市场部"},
+
+        {id: 5, pId: 1, name: "分公司四", open: false},
+        {id: 501, pId: 5, name: "产品部"},
+        {id: 502, pId: 5, name: "客服部"},
+        {id: 503, pId: 5, name: "市场部"}
+    ];
+
+    $(document).ready(function () {
+        $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+
+        //Datemask dd/mm/yyyy
+        $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
+        //Datemask2 mm/dd/yyyy
+        $("#datemask2").inputmask("mm/dd/yyyy", {"placeholder": "mm/dd/yyyy"});
+        //Money Euro
+        $("[data-mask]").inputmask();
+
+        //Date picker
+       /* $('#datepicker').datepicker({
+            autoclose: true
+        });*/
+        $("#datepicker").datepicker({
+            language: "zh-CN",
+            autoclose: true,//选中之后自动隐藏日期选择框           
+            format: "yyyy-mm-dd"//日期格式，详见 http://bootstrap-datepicker.readthedocs.org/en/release/options.html#format
+        });
+    });
+
+    var newCount = 1;
+
+    function addHoverDom(treeId, treeNode) {
+        var sObj = $("#" + treeNode.tId + "_span");
+        if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
+        var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
+            + "' title='add node' onfocus='this.blur();'></span>";
+        sObj.after(addStr);
+        var btn = $("#addBtn_" + treeNode.tId);
+        if (btn) btn.bind("click", function () {
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            zTree.addNodes(treeNode, {id: (100 + newCount), pId: treeNode.id, name: "new node" + (newCount++)});
+            return false;
+        });
+    };
+
+    function removeHoverDom(treeId, treeNode) {
+        $("#addBtn_" + treeNode.tId).unbind().remove();
+    };
+
 </script>
 </body>
 </html>
