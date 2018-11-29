@@ -1,5 +1,8 @@
 package com.lin.sysmanage.utils.pdf;
 
+/**
+ * 存文档尾部数据的实体类
+ */
 public class MyRectangle {
     private float width;
     private float left;

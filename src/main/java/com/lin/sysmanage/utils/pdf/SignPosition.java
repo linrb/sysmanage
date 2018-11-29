@@ -1,5 +1,8 @@
 package com.lin.sysmanage.utils.pdf;
 
+/**
+ * 签章位置类
+ */
 public class SignPosition {
     private float x;
 

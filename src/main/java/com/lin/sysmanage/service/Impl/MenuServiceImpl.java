@@ -39,6 +39,7 @@ public class MenuServiceImpl implements IMenuService {
     public List<Menu> findMenuListByPage(int currentPage, int pageSize) {
         //使用分页插件,核心代码就这一行
         String ordeyBy = "menu_id DESC";
+       
         PageHelper.startPage(currentPage, pageSize, ordeyBy);
         // 获取
         return menuMapper.selectMenuAll();

@@ -3,15 +3,10 @@ package com.lin.sysmanage.utils.pdf;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.Rectangle;
-import com.itextpdf.kernel.geom.Vector;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.kernel.pdf.canvas.parser.EventType;
 import com.itextpdf.kernel.pdf.canvas.parser.PdfDocumentContentParser;
-import com.itextpdf.kernel.pdf.canvas.parser.data.IEventData;
-import com.itextpdf.kernel.pdf.canvas.parser.data.TextRenderInfo;
-import com.itextpdf.kernel.pdf.canvas.parser.listener.IEventListener;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.Cell;
@@ -24,7 +19,7 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.List;
 
 public class PdfParser {
     private static Logger log = Log4jUtils.getLog(PdfParser.class);
@@ -63,15 +58,14 @@ public class PdfParser {
         try {
             //读取文章尾部位置
             MyRectangle myRectangle = getLastWordRectangle(rootPath);
-            //还没签印的，临时文件路径
-            System.out.println(tempPath);
+            //还没签印的，临时文件路径           
             tempRootPath = rootPath.substring(0, rootPath.length() - 4) + "_temp.pdf";
 
             //添加尾部内容
             SignPosition signPosition = addTailSign(myRectangle, tempPath, tempRootPath, signType.getType(), contents, already);
-            InputStream in = PdfParser.class.getClassLoader().getResourceAsStream("lin.p12");
+            InputStream certStream = PdfParser.class.getClassLoader().getResourceAsStream("lin.p12");
 
-            byte[] fileData = SignPdf.sign("123456", in, tempRootPath, imgPath, signPosition.getX(), signPosition.getY(), signPosition.getPageNum());
+            byte[] fileData = SignPdf.sign("123456", certStream, tempRootPath, imgPath, signPosition.getX(), signPosition.getY(), signPosition.getPageNum());
             FileUtil.uploadFile(fileData, outPath);
         } catch (Exception e) {
             log.error("签名出错", e);
@@ -99,7 +93,6 @@ public class PdfParser {
      * @throws Exception
      */
     private SignPosition addTailSign(MyRectangle myRectangle, String input, String output, Integer type, List<String> content, boolean already) throws Exception {
-
         PdfReader reader = new PdfReader(input);
         PdfWriter writer = new PdfWriter(output);
         PdfDocument pdf = new PdfDocument(reader, writer);
@@ -138,7 +131,6 @@ public class PdfParser {
         table.setFixedPosition(left1, bottom, 200);
         table.setBorder(Border.NO_BORDER);
 
-
         for (String text : content) {
             Paragraph paragraph = new Paragraph();
             paragraph.add(text).setFont(font).setFontSize(myRectangle.getHeight());
@@ -169,11 +161,11 @@ public class PdfParser {
     }
 
     /**
-     * 拿到文章末尾参数
+     * 文章末尾参数
      */
     private MyRectangle getLastWordRectangle(String input) throws IOException {
         PdfDocument pdfDocument = new PdfDocument(new PdfReader(input));
-        MyEventListener myEventListener = new MyEventListener();
+        MyPdfEventListener myEventListener = new MyPdfEventListener();
         PdfDocumentContentParser parser = new PdfDocumentContentParser(pdfDocument);
         parser.processContent(pdfDocument.getNumberOfPages(), myEventListener);
         List<Rectangle> rectangles = myEventListener.getRectangles();
@@ -184,7 +176,7 @@ public class PdfParser {
         Rectangle tempRec = null;
         float minV = 1000;
         MyRectangle myRectangle = new MyRectangle();
-        //拿到文本最左最下和最右位置
+        //文本最左最下和最右位置
         for (Rectangle rectangle : rectangles) {
             if (isTop) {
                 myRectangle.setTop(rectangle.getY());
@@ -209,7 +201,6 @@ public class PdfParser {
             if (y < bottom) {
                 bottom = y;
             }
-
         }
         Rectangle rectangle = rectangles.get(rectangles.size() - 1);
         float height = rectangle.getHeight();
@@ -222,40 +213,5 @@ public class PdfParser {
         myRectangle.setWidth(right - left);
         pdfDocument.close();
         return myRectangle;
-    }
-
-
-    static class MyEventListener implements IEventListener {
-        private List<Rectangle> rectangles = new ArrayList<>();
-
-        @Override
-        public void eventOccurred(IEventData data, EventType type) {
-            if (type == EventType.RENDER_TEXT) {
-                TextRenderInfo renderInfo = (TextRenderInfo) data;
-                if ("".equals(renderInfo.getText().trim())) {
-                    return;
-                }
-                Vector startPoint = renderInfo.getDescentLine().getStartPoint();
-                Vector endPoint = renderInfo.getAscentLine().getEndPoint();
-                float x1 = Math.min(startPoint.get(0), endPoint.get(0));
-                float x2 = Math.max(startPoint.get(0), endPoint.get(0));
-                float y1 = Math.min(startPoint.get(1), endPoint.get(1));
-                float y2 = Math.max(startPoint.get(1), endPoint.get(1));
-                rectangles.add(new Rectangle(x1, y1, x2 - x1, y2 - y1));
-            }
-        }
-
-        @Override
-        public Set<EventType> getSupportedEvents() {
-            return new LinkedHashSet<>(Collections.singletonList(EventType.RENDER_TEXT));
-        }
-
-        public List<Rectangle> getRectangles() {
-            return rectangles;
-        }
-
-        public void clear() {
-            rectangles.clear();
-        }
-    }
+    }    
 }

@@ -21,15 +21,14 @@ public class SignPdf {
 
     /**
      * @param password    秘钥密码
-     * @param inputStream 秘钥文件
+     * @param certStream 秘钥文件
      * @param signPdfSrc  签名的PDF文件
      * @param signImage   签名图片文件
      * @param x           x坐标
      * @param y           y坐标
      * @return
      */
-
-    public static byte[] sign(String password, InputStream inputStream, String signPdfSrc, String signImage,
+    public static byte[] sign(String password, InputStream certStream, String signPdfSrc, String signImage,
                               float x, float y, int page) {
         File signPdfSrcFile = new File(signPdfSrc);
         PdfReader reader = null;
@@ -39,8 +38,8 @@ public class SignPdf {
             BouncyCastleProvider provider = new BouncyCastleProvider();
             Security.addProvider(provider);
             KeyStore ks = KeyStore.getInstance("PKCS12", new BouncyCastleProvider());
-            // 私钥密码 为Pkcs生成证书是的私钥密码 123456
-            ks.load(inputStream, password.toCharArray());
+            // 私钥密码 为Pkcs生成证书是的私钥密码
+            ks.load(certStream, password.toCharArray());
             String alias = (String) ks.aliases().nextElement();
             PrivateKey key = (PrivateKey) ks.getKey(alias, password.toCharArray());
             Certificate[] chain = ks.getCertificateChain(alias);
@@ -84,9 +83,9 @@ public class SignPdf {
                 }
             }
 
-            if (inputStream != null) {
+            if (certStream != null) {
                 try {
-                    inputStream.close();
+                    certStream.close();
                 } catch (IOException e) {
                 }
             }
