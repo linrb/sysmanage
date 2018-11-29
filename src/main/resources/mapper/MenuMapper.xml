@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lin.sysmanage.dao.MenuMapper">
-	<resultMap type="com.lin.sysmanage.entity.Menu" id="MenuResult">
-		<id     property="menuId"         column="menu_id"        />
-		<result property="menuName"       column="menu_name"      />
-		<result property="parentName"     column="parent_name"    />
-		<result property="parentId"       column="parent_id"      />
-		<result property="orderNum"       column="order_num"      />
-		<result property="url"            column="url"            />
-		<result property="menuType"       column="menu_type"      />
-		<result property="visible"        column="visible"        />
-		<result property="perms"          column="perms"          />
-		<result property="icon"           column="icon"           />
-	</resultMap>
-	
-	<sql id="selectMenuVo">
+    <resultMap type="com.lin.sysmanage.entity.Menu" id="MenuResult">
+        <id property="menuId" column="menu_id"/>
+        <result property="menuName" column="menu_name"/>
+        <result property="parentName" column="parent_name"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="orderNum" column="order_num"/>
+        <result property="url" column="url"/>
+        <result property="menuType" column="menu_type"/>
+        <result property="visible" column="visible"/>
+        <result property="perms" column="perms"/>
+        <result property="icon" column="icon"/>
+    </resultMap>
+
+    <sql id="selectMenuVo">
         select menu_id, menu_name, parent_id, order_num, url, menu_type, visible, perms, icon, create_by, create_time 
 		from sys_menu
     </sql>
-    
+
     <select id="selectMenusByUserId" parameterType="Long" resultMap="MenuResult">
 		select distinct m.menu_id, m.parent_id, m.menu_name, m.url, m.perms , m.menu_type, m.icon, m.order_num, m.create_time
 		from sys_menu m
@@ -31,42 +31,39 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		order by m.order_num
 	</select>
 
-	<select id="selectMenuNormalAll" resultMap="MenuResult">
+    <select id="selectMenuNormalAll" resultMap="MenuResult">
 		select distinct m.menu_id, m.parent_id, m.menu_name, m.url, m.perms , m.menu_type, m.icon, m.order_num, m.create_time
 		from sys_menu m
 		where m.menu_type in ('M', 'C') and m.visible = 0
 		order by m.order_num
 	</select>
-	
-	<select id="selectMenuAll" resultMap="MenuResult">
-		<include refid="selectMenuVo"/>
-	</select>
 
-	<select id="selectMenuList" parameterType="com.lin.sysmanage.entity.Menu" resultMap="MenuResult">
+    <select id="selectMenuAll" resultMap="MenuResult">
+        <include refid="selectMenuVo"/>
+    </select>
+
+    <select id="selectMenuList" parameterType="com.lin.sysmanage.entity.Menu" resultMap="MenuResult">
         <include refid="selectMenuVo"/>
         <where>
-			<if test="menuName != null and menuName != ''">
-				AND menu_name like concat('%', #{menuName}, '%')
-			</if>
-			<if test="visible != null and visible != ''">
-				AND visible = #{visible}
-			</if>
-		</where>
+            <if test="menuName != null and menuName != ''">
+                AND menu_name like concat('%', #{menuName}, '%')
+            </if>
+            <if test="visible != null and visible != ''">
+                AND visible = #{visible}
+            </if>
+        </where>
     </select>
-	
-	<select id="selectMenuById" parameterType="Long" resultMap="MenuResult">
+
+    <select id="selectMenuById" parameterType="Long" resultMap="MenuResult">
 		SELECT t.menu_id, t.parent_id, t.menu_name, t.order_num, t.url, t.menu_type, t.visible, t.perms, t.icon, t.remark,
 			(SELECT menu_name FROM sys_menu WHERE menu_id = t.parent_id) parent_name
 		FROM sys_menu t
 		where t.menu_id = #{menuId}
 	</select>
-	
-	<select id="selectCountMenuByParentId" resultType="Integer">
+
+    <select id="selectCountMenuByParentId" resultType="Integer">
 	    select count(1) from sys_menu where parent_id=#{menuId}  
 	</select>
-	
 
 
-
-	
 </mapper> 

@@ -9,12 +9,12 @@
     </resultMap>
 
     <resultMap id="userMap" type="com.lin.sysmanage.entity.User">
-        <id property="userName" column="userId"/>
-        <result property="userId" column="userName"/>
-        <result column="login_name" property="loginName" jdbcType="VARCHAR"/>
+        <id property="userId" column="userId"/>
+        <result property="userName" column="userName"/>
+        <result  property="loginName" column="login_name" jdbcType="VARCHAR"/>
         <result property="password" column="password"/>
         <collection property="roles" ofType="com.lin.sysmanage.entity.SysRole">
-            <result column="role_key" property="roleKey"/>
+            <result  property="roleKey" column="role_key"/>
         </collection>
     </resultMap>
 
