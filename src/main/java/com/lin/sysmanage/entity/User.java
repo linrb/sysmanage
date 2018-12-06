@@ -3,8 +3,8 @@ package com.lin.sysmanage.entity;
 import java.io.Serializable;
 import java.util.List;
 
-public class User implements Serializable {
-
+public class User  implements Serializable {
+    private static final long serialVersionUID = -6718838800112233445L;
     private String userId;
     private String userName;
     private String password;

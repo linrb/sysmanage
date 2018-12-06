@@ -20,7 +20,7 @@
         select menu_id, menu_name, parent_id, order_num, url, menu_type, visible, perms, icon, create_by, create_time 
 		from sys_menu
     </sql>
-
+  
     <select id="selectMenusByUserId" parameterType="Long" resultMap="MenuResult">
 		select distinct m.menu_id, m.parent_id, m.menu_name, m.url, m.perms , m.menu_type, m.icon, m.order_num, m.create_time
 		from sys_menu m
@@ -60,10 +60,5 @@
 		FROM sys_menu t
 		where t.menu_id = #{menuId}
 	</select>
-
-    <select id="selectCountMenuByParentId" resultType="Integer">
-	    select count(1) from sys_menu where parent_id=#{menuId}  
-	</select>
-
 
 </mapper> 
