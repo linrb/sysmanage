@@ -25,7 +25,7 @@ public class UserServiceImpl implements IUserService {
     @Override   
     @Cacheable(value = "user", key = "#root.args[0]", unless = "#result eq null ") 
     public User getUserById(Integer userId) {
-        System.out.println("无缓存的时候调用这里");
+        System.out.println("无缓存的时候调用数据库读取");
         return userMapper.getUserById(userId);
     }
 

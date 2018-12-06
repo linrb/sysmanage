@@ -5,6 +5,7 @@ import com.lin.sysmanage.dao.MenuMapper;
 import com.lin.sysmanage.entity.Menu;
 import com.lin.sysmanage.service.IMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,11 +26,12 @@ public class MenuServiceImpl implements IMenuService {
         return menuMapper.selectMenuNormalAll();
     }
 
+    @Cacheable(value = "menu", key = "#root.args[0]", unless = "#result eq null ")
     @Override
     public Menu selectMenuById(Long menuId) {
         return menuMapper.selectMenuById(menuId);
     }
-
+    
     @Override
     public List<Menu> selectMenuList(Menu menu) {
         return menuMapper.selectMenuList(menu);

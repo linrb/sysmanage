@@ -413,7 +413,7 @@ public class RedisUtils {
      * @return
      */
     public List<Object> lGet(String key, long start, long end) {
-        try {
+        try {          
             return redisTemplate.opsForList().range(key, start, end);
         } catch (Exception e) {
             e.printStackTrace();

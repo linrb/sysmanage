@@ -1,6 +1,7 @@
 package com.lin.sysmanage.controller;
 
 import com.lin.sysmanage.aspect.Log;
+import com.lin.sysmanage.cache.RedisUtils;
 import com.lin.sysmanage.entity.Menu;
 import com.lin.sysmanage.service.IMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class MenuController {
     @Autowired
     private IMenuService menuService;
 
+    @Autowired
+    RedisUtils redisUtils;
+
     @RequestMapping("/menuList")
     public String menu() {
 
@@ -29,8 +33,25 @@ public class MenuController {
     @GetMapping("/list")
     @ResponseBody
     public List<Menu> list(Menu menu) {
-        List<Menu> menuList = menuService.selectMenuList(menu);
+        List<Menu> menuList = (List<Menu>) redisUtils.get("menuList");
+        if (menuList == null) {
+            System.out.println("缓存中没有");
+            menuList = menuService.selectMenuList(menu);
+            redisUtils.set("menuList", menuList);
+            System.out.println("添加缓存");
+        } else {
+            System.out.println("从缓存中取" + menuList.size());
+        }
         return menuList;
+    }
+
+
+    @Log(descrption = "查询菜单信息", actionType = "4")
+    @GetMapping("/selectMenuById")
+    @ResponseBody
+    public Menu selectMenuById(Long menuId) {
+        Menu menu = menuService.selectMenuById(menuId);
+        return menu;
     }
 
     /*
