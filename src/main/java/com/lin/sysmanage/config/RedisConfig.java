@@ -3,6 +3,7 @@ package com.lin.sysmanage.config;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
@@ -20,10 +21,7 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Redis配置  配置序列化方式以及缓存管理器 @EnableCaching 开启缓存
@@ -32,6 +30,12 @@ import java.util.Set;
 @EnableCaching//启用缓存，这个注解很重要；
 public class RedisConfig extends CachingConfigurerSupport {
 
+    /**
+     * 读取缓存配置
+     */
+    @Value("${com.lin.sysmanage.cache.config}")
+    private String cachList;    
+    
     /**
      * 配置自定义redisTemplate
      *
@@ -74,13 +78,24 @@ public class RedisConfig extends CachingConfigurerSupport {
 
         // 设置一个初始化的缓存空间set集合
         Set<String> cacheNames = new HashSet<>();
-        cacheNames.add("user");
-        cacheNames.add("menu");
+        //cacheNames.add("user");
+        //cacheNames.add("menu");
         
         // 对每个缓存空间应用不同的配置
         Map<String, RedisCacheConfiguration> configMap = new HashMap<>();
-        configMap.put("user", config.entryTtl(Duration.ofMinutes(1)));
-        configMap.put("menu",config);
+        //configMap.put("user", config.entryTtl(Duration.ofMinutes(1)));
+       // configMap.put("menu",config);
+      
+        String[] arrCach=cachList.split(",");       
+        if(arrCach.length>0)
+        {
+             for (String value:arrCach)
+             {
+                 System.out.println("缓存集合:" +value);
+                 cacheNames.add(value);
+                 configMap.put(value,config);
+             }
+        }
         
         // 使用自定义的缓存配置初始化一个cacheManager
         RedisCacheManager cacheManager = RedisCacheManager.builder(redisConnectionFactory)
