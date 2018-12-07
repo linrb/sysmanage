@@ -31,9 +31,11 @@ public class MenuServiceImpl implements IMenuService {
     public Menu selectMenuById(Long menuId) {
         return menuMapper.selectMenuById(menuId);
     }
-    
+
+    @Cacheable(value="menu", keyGenerator = "keyGenerator",unless = "#result eq null")
     @Override
     public List<Menu> selectMenuList(Menu menu) {
+        System.out.println("无缓存的时候调用数据库读取");
         return menuMapper.selectMenuList(menu);
     }
 

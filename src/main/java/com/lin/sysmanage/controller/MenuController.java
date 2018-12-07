@@ -33,7 +33,7 @@ public class MenuController {
     @GetMapping("/list")
     @ResponseBody
     public List<Menu> list(Menu menu) {
-        List<Menu> menuList = (List<Menu>) redisUtils.get("menuList");
+       /* List<Menu> menuList = (List<Menu>) redisUtils.get("menuList");
         if (menuList == null) {
             System.out.println("缓存中没有");
             menuList = menuService.selectMenuList(menu);
@@ -41,7 +41,8 @@ public class MenuController {
             System.out.println("添加缓存");
         } else {
             System.out.println("从缓存中取" + menuList.size());
-        }
+        }*/
+        List<Menu> menuList =menuService.selectMenuList(menu);
         return menuList;
     }
 
