@@ -5,15 +5,23 @@ import com.lin.sysmanage.entity.User;
 import com.lin.sysmanage.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements IUserService {
-
+    
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     /**
      * @Cacheable 应用到读取数据的方法上，先从缓存中读取，如果没有再从DB获取数据，然后把数据添加到缓存中
@@ -31,5 +39,66 @@ public class UserServiceImpl implements IUserService {
 
     public List<User> getUserList() {
         return userMapper.getUserList();
+    }
+
+    /**
+     * 创建对象
+      * @param user
+     */    
+    @Override
+    public void saveUser(User user) {
+        mongoTemplate.save(user);
+    }
+
+    /**
+     * 根据用户名查询对象
+     * @param userName
+     * @return
+     */
+    @Override
+    public User findUserByUserName(String userName) {
+        Query query=new Query(Criteria.where("userName").is(userName));
+        User user =  mongoTemplate.findOne(query , User.class);
+        return user;
+    }
+
+    /**
+     * 更新对象
+     * @param user
+     */
+    @Override
+    public void updateUser(User user) {
+        Query query=new Query(Criteria.where("userId").is(user.getUserId()));
+        Update update= new Update().set("loginName", user.getLoginName()).set("password", user.getPassword());
+        //更新查询返回结果集的第一条
+        mongoTemplate.updateFirst(query,update,User.class);
+        //更新查询返回结果集的所有
+        // mongoTemplate.updateMulti(query,update,UserEntity.class);
+    }
+
+    /**
+     * 删除对象
+     * @param id
+     */
+    @Override
+    public void deleteUserById(Integer id) {
+        Query query=new Query(Criteria.where("userId").is(id));
+        mongoTemplate.remove(query,User.class);
+    }
+
+    /**
+     * 分页查询
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public List<User> findAll(int pageNo, int pageSize) {
+        Query query = new Query();
+        query.skip((pageNo - 1) * pageSize);
+        query.limit(pageSize);
+        query.with(new Sort(Sort.Direction.DESC, "userId"));//按照userId排序
+        List<User> users = mongoTemplate.find(query,User.class);
+        return users;
     }
 }

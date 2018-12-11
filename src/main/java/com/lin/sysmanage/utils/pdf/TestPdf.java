@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class TestPdf {
+public class TestPdf {    
+  
     public static void main(String[] args) throws Exception {
         List<String> contentsA = new ArrayList<>();
         contentsA.add("甲方法定代表人：甲方法定代表人");
@@ -30,12 +31,6 @@ public class TestPdf {
         String singImgFilePath2 = "D:/temp/index1.png";//甲方章文件
         String fileOut = "D:/temp/最终合同.pdf";//最终文件路径
         // pdfParser.startSign(input, tempPath, fileOut, singImgFilePath2, PdfParser.SignType.SIGN_B, contentsB, true);//乙方
-        String cachList = "user,menu,role";
-        List<String> list = new ArrayList<>();
-        String[] arrCach = cachList.split(",");
-        for (String c : arrCach) {
-            System.out.println("缓存集合:" + c);
-            list.add(c);
-        }
+        
     }
 }

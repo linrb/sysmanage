@@ -84,8 +84,7 @@ public class RedisUtils {
      * @param key 键
      * @return 值
      */
-    public Object get(String key) {
-        //return key==null?null:redisTemplate.opsForValue().get(key);
+    public Object get(String key) {       
         return redisTemplate.opsForValue().get(key);
     }
 
@@ -176,7 +175,7 @@ public class RedisUtils {
      * @param key 键
      * @return 对应的多个键值
      */
-    public Map<Object, Object> hmget(String key) {
+    public Map<Object, Object> hGetAll(String key) {
         return redisTemplate.opsForHash().entries(key);
     }
 
@@ -187,7 +186,7 @@ public class RedisUtils {
      * @param map 对应多个键值
      * @return true 成功 false 失败
      */
-    public boolean hmset(String key, Map<String, Object> map) {
+    public boolean hPutAll(String key, Map<String, Object> map) {
         try {
             redisTemplate.opsForHash().putAll(key, map);
             return true;
@@ -205,7 +204,7 @@ public class RedisUtils {
      * @param time 时间(秒)
      * @return true成功 false失败
      */
-    public boolean hmset(String key, Map<String, Object> map, long time) {
+    public boolean hPutAll(String key, Map<String, Object> map, long time) {
         try {
             redisTemplate.opsForHash().putAll(key, map);
             if (time > 0) {
@@ -226,7 +225,7 @@ public class RedisUtils {
      * @param value 值
      * @return true 成功 false失败
      */
-    public boolean hset(String key, String item, Object value) {
+    public boolean hPut(String key, String item, Object value) {
         try {
             redisTemplate.opsForHash().put(key, item, value);
             return true;
@@ -245,7 +244,7 @@ public class RedisUtils {
      * @param time  时间(秒)  注意:如果已存在的hash表有时间,这里将会替换原有的时间
      * @return true 成功 false失败
      */
-    public boolean hset(String key, String item, Object value, long time) {
+    public boolean hPut(String key, String item, Object value, long time) {
         try {
             redisTemplate.opsForHash().put(key, item, value);
             if (time > 0) {

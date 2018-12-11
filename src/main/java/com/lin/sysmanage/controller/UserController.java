@@ -19,14 +19,27 @@ public class UserController {
 
     @RequestMapping(value = "/index")
     public String index() {
+        for (Integer i=3;i<5;i++) {
+            User user = new User();
+            user.setUserId(i.toString());
+            user.setUserName("xm"+i);
+            user.setPassword("123456");
+            user.setLoginName("小明"+i);
+           // userService.saveUser(user);
+        }
         return "index";
     }
 
     @ResponseBody
     @RequestMapping(value = "/getUserList")
     public List<User> getUserList() {
-        List<User> userList = userService.getUserList();
-        System.out.println();
+        List<User> userList = userService.getUserList();       
+        User user=userService.findUserByUserName("xm3");        
+        user.setLoginName("xm-3");
+        user.setPassword("123");       
+        userService.updateUser(user);
+        List<User> u1=userService.findAll(1,10);
+        userList.addAll(u1);
         return userList;
     }
 
