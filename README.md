@@ -1,12 +1,12 @@
-## sysmanage
+# sysmanage
 
 Spring Boot+Mybatis+SpringMVC框架搭建
 
 学习Java平台的案例
 
-## 技术栈
+# 技术栈
 
-# 后端
+## 后端
 Spring Framework	容器	http://projects.spring.io/spring-framework/
 
 SpringMVC	MVC框架	http://docs.spring.io/spring/docs/current/spring-framework-reference/htmlsingle/#mvc
@@ -27,7 +27,7 @@ iText PDF文件的Java类库 https://itextpdf.com/
 
 Log4j 日志管理
 
-# 前端
+## 前端
 jQuery	函数库	http://jquery.com/
 
 Bootstrap	前端框架	http://getbootstrap.com/
