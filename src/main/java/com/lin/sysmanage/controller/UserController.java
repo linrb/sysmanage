@@ -27,7 +27,7 @@ public class UserController {
             user.setLoginName("小明"+i);
            // userService.saveUser(user);
         }
-        return "index";
+        return "userlist";
     }
 
     @ResponseBody

@@ -23,7 +23,7 @@ public class MenuController {
 
     @RequestMapping("/menuList")
     public String menu() {
-        return "menu/menu";
+        return "menu/menulist";
     }
 
 
