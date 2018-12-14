@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta charset="utf-8"/>
-    <title>菜单管理 - Ace Admin</title>
+    <title>菜单管理 - Admin</title>
 
     <meta name="description" content="along with an email converter tool"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
@@ -12,11 +12,13 @@
 
     <!-- bootstrap-table 表格插件样式 -->
     <link th:href="@{/js/plugins/bootstrap-table/bootstrap-table.css}" rel="stylesheet"/>
-
     <link th:href="@{/js/plugins/jquery-treegrid/css/jquery.treegrid.css}" rel="stylesheet"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
+  
     <style>
-        html,body{margin:0px; height:100%; }
+        html, body {
+            margin: 0px;
+            height: 100%;
+        }
     </style>
 </head>
 
@@ -27,29 +29,7 @@
             </div>
             <div class="panel-body">
                 <form class="form-inline" role="form" id="queryForm">
-                    <div class="form-group">
-                        <label for="txtTitle">菜单名称:</label>
-                        <input type="text" class="form-control" name="txtTitle" id="txtTitle"
-                               placeholder="请输入名称">
-                    </div>
-                    <div class="form-group">
-                        <label for="selMenuType">类型:</label>
-                        <select class="js-example-basic-single form-control" id="selMenuType">
-                            <option value="M">目录</option>
-                            <option value="C">菜单</option>
-                            <option value="F">按纽</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label">状态：</label>
-                        <select class="js-example-basic-single form-control" id="selVisible">
-                            <option value="0">可见</option>
-                            <option value="1">隐藏</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <input class="btn btn-primary" type="button" value="查询" onclick="SearchData()">
-                    </div>
+                   
                 </form>
             </div>
             <div id="toolbar" class="btn-group" style="padding-bottom:15px">
@@ -71,8 +51,6 @@
             <table id="table"></table>
         </div>
 
-   
-
 
 <!-- basic scripts -->
 <script th:src="@{/js/jquery.min.js}"></script>
@@ -80,22 +58,17 @@
 <!-- bootstrap-table 表格插件 -->
 <script th:src="@{/js/plugins/bootstrap-table/bootstrap-table.js}"></script>
 <script th:src="@{/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.js}"></script>
-
 <script th:src="@{/js/plugins/bootstrap-table/extensions/treegrid/bootstrap-table-treegrid.js}"></script>
 <script th:src="@{/js/plugins/jquery-treegrid/js/jquery.treegrid.min.js}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
 <script inline="javascript">
     var $table = $('#table');
     $(function () {
-        $("#txtAuthor").select2({
-            language: "zh-CN", //设置 提示语言
-            width: "50%", //设置下拉框的宽度
-        });
 
         $table.bootstrapTable({
             url: '/menu/list',
-            queryParams: getQueryParams,
-            striped: true,
+           // queryParams: getQueryParams,
+            striped: true,           
             sidePagination: 'server',
             idField: 'menuId',
             columns: [
@@ -169,22 +142,8 @@
             // bootstrap-table-treetreegrid.js 插件配置
         });
     });
-
-    //查询条件
-    function getQueryParams(params) {
-        return {
-            pageSize: params.pageSize,
-            pageIndex: params.pageNumber,
-            menuName: $.trim($("#txtTitle").val()),
-            menuType: $("#selMenuType").val(),
-            visible: $("#selVisible").val(),
-        };
-    }
-
-    //查询事件
-    function SearchData() {
-        $('#table').bootstrapTable('refresh', {pageNumber: 1});
-    }
+    
+   
 
     // 格式化类型
     function typeFormatter(value, row, index) {

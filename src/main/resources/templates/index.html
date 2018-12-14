@@ -7,7 +7,7 @@
     <meta name="description" content="overview &amp; stats"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
     <!-- bootstrap & fontawesome -->
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>  
     <style>
         ul {
             margin: 0;
@@ -37,18 +37,23 @@
         }
 
         .panel-group .panel {
-            border-radius: 0;
+            border-radius: 15px;
+            border: 1px solid #bce8f1;
         }
 
-        .panel-default > .panel-heading {
+        .panel-default > .panel-heading {            
             color: #333;
-            background-color: #fff;
-            border-color: #e4e5e7;
+            background-color: #d9edf7;
+            border-color: #bce8f1;
             padding: 0;
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
+            border-top-left-radius: 14px;
+            border-top-right-radius: 14px;
+            border-bottom-left-radius: 14px;
+            border-bottom-right-radius: 14px;
         }
 
         .panel-default > .panel-heading a {
@@ -74,15 +79,17 @@
         }
 
         .panel-default > .panel-heading a[aria-expanded="true"] {
-            background-color: #eee;
+            background-color: #d6e9c6;
+            border-top-left-radius: 14px;
+            border-top-right-radius: 14px;
         }
 
         .panel-default > .panel-heading a[aria-expanded="true"]:after {
-            content: "\e113";
+            content: "\e114";
         }
 
         .panel-default > .panel-heading a[aria-expanded="false"]:after {
-            content: "\e114";
+            content: "\e113";            
         }
     </style>
 </head>
@@ -116,7 +123,7 @@
                         <h4 class="panel-title">
                             <a role="button" data-toggle="collapse" data-parent="#accordionMenu" href="#collapseOne"
                                aria-expanded="true" aria-controls="collapseOne">
-                                系统管理
+                                <span class="glyphicon glyphicon-th-large"></span>系统管理
                             </a>
                         </h4>
                     </div>
@@ -138,17 +145,17 @@
                         <h4 class="panel-title">
                             <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionMenu"
                                href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                Menu 1
+                                <span class="glyphicon glyphicon-wrench"></span>系统工具
                             </a>
                         </h4>
                     </div>
                     <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                         <div class="panel-body">
                             <ul class="nav">
-                                <li><a href="#">item 1</a></li>
-                                <li><a href="#">item 2</a></li>
-                                <li><a href="#">item 3</a></li>
-                                <li><a href="#">item 4</a></li>
+                                <li><a href="#">系统接口</a></li>
+                                <li><a href="#">在线用户</a></li>
+                                <li><a href="#">定时任务</a></li>
+                                <li><a href="#">数据监控</a></li>
                             </ul>
                         </div>
                     </div>
@@ -162,7 +169,7 @@
             <div class="tab-content">
             </div>
             <!-- 相关代码结束 -->
-        </div>
+        </div>       
     </div>
 </div>
 <script th:src="@{/js/jquery.min.js}"></script>
@@ -183,7 +190,7 @@
         var closable = 1;
         var item = {'id': id, 'name': name, 'url': url, 'closable': closable == 1 ? true : false};
         closableTab.addTab(item);
-    }
+    }    
 </script>
 </body>
 </html>

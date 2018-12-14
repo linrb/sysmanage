@@ -41,6 +41,11 @@ public class UserServiceImpl implements IUserService {
         return userMapper.getUserList();
     }
 
+    @Override
+    public List<User> selectUserList(User user) {
+        return userMapper.selectUserList(user);
+    }
+
     /**
      * 创建对象
       * @param user
@@ -56,10 +61,10 @@ public class UserServiceImpl implements IUserService {
      * @return
      */
     @Override
-    public User findUserByUserName(String userName) {
-        Query query=new Query(Criteria.where("userName").is(userName));
-        User user =  mongoTemplate.findOne(query , User.class);
-        return user;
+    public List<User> findUserByName(String userName) {
+        Query query=new Query(Criteria.where("userName").regex(userName));//is:符合条件;in:匹配;regex:模糊查询
+        List<User> list =  mongoTemplate.find(query , User.class);
+        return list;
     }
 
     /**

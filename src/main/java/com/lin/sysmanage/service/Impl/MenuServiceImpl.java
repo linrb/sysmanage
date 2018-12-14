@@ -18,7 +18,9 @@ public class MenuServiceImpl implements IMenuService {
 
     @Cacheable(value="menu", keyGenerator = "keyGenerator",unless = "#result eq null")
     @Override
-    public List<Menu> selectMenuAll() {
+    public List<Menu> selectMenuAll()
+    {
+        System.out.println("无缓存的时候调用数据库读取");
         return menuMapper.selectMenuAll();
     }
 
@@ -35,7 +37,7 @@ public class MenuServiceImpl implements IMenuService {
     
     @Override
     public List<Menu> selectMenuList(Menu menu) {
-        System.out.println("无缓存的时候调用数据库读取");
+      
         return menuMapper.selectMenuList(menu);
     }
 

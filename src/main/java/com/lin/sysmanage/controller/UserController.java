@@ -18,28 +18,37 @@ public class UserController {
     private IUserService userService;
 
     @RequestMapping(value = "/index")
-    public String index() {
-        for (Integer i=3;i<5;i++) {
+    public String index() {       
+        for (Integer i = 3; i < 5; i++) {
             User user = new User();
             user.setUserId(i.toString());
-            user.setUserName("xm"+i);
+            user.setUserName("xm" + i);
             user.setPassword("123456");
-            user.setLoginName("小明"+i);
-           // userService.saveUser(user);
+            user.setLoginName("小明" + i);
+            // userService.saveUser(user);
         }
         return "userlist";
     }
 
     @ResponseBody
     @RequestMapping(value = "/getUserList")
-    public List<User> getUserList() {
-        List<User> userList = userService.getUserList();       
-        User user=userService.findUserByUserName("xm3");        
-        user.setLoginName("xm-3");
-        user.setPassword("123");       
-        userService.updateUser(user);
-        List<User> u1=userService.findAll(1,10);
-        userList.addAll(u1);
+    public List<User> getUserList(User user) {
+        System.out.println("数据测试,user:" + user.getLoginName());
+        List<User> userList = userService.selectUserList(user);
+        if(!user.getLoginName().isEmpty()) {
+            List<User> userUp = userService.findUserByName(user.getLoginName());
+            //userUp.setLoginName("xm-3");
+            // userUp.setPassword("123");       
+            // userService.updateUser(userUp);
+            // List<User> u1=userService.findAll(1,10);
+            if (userUp != null) {
+                userList.addAll(userUp);
+            }
+        }else
+        {
+            List<User> userMongoDb = userService.findAll(1,100);
+            userList.addAll(userMongoDb);
+        }
         return userList;
     }
 
@@ -48,7 +57,7 @@ public class UserController {
     @RequestMapping(value = "/getUserById")
     public User getUserById(Integer userId) {
         User user = userService.getUserById(userId);
-        System.out.println("数据测试成功,user:"+user.getUserName()); 
-        return  user;
+        System.out.println("数据测试成功,user:" + user.getUserName());
+        return user;
     }
 }

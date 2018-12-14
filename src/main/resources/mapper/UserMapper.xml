@@ -43,4 +43,14 @@
             </if>
         </where>
     </select>
+    <select id="selectUserList" resultType="com.lin.sysmanage.entity.User" resultMap="BaseResultMap">
+        select *
+        from sys_user
+        <where>
+            <if test="loginName!=null and loginName!=''">
+                <!--2、如果where后以and或or开始则会删除and或or-->
+                and login_name like concat(concat('%',#{loginName}),'%');
+            </if>
+        </where>
+    </select>
 </mapper>

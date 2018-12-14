@@ -6,14 +6,14 @@ import java.util.List;
 
 public interface IUserService {
 
-    User getUserById(Integer userId);
-
+    User getUserById(Integer userId);  
     List<User> getUserList();
+    List<User> selectUserList(User user);
     
     //以下是基于MongoDB的操作
     void  saveUser(User user);
-    
-    User findUserByUserName(String userName);
+
+    List<User> findUserByName(String userName);
 
     void updateUser(User user);
     
