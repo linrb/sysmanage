@@ -5,18 +5,21 @@ import com.lin.sysmanage.dao.MenuMapper;
 import com.lin.sysmanage.entity.Menu;
 import com.lin.sysmanage.service.IMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@CacheConfig(cacheNames={"menu"})
 public class MenuServiceImpl implements IMenuService {
 
     @Autowired
     private MenuMapper menuMapper;
 
-    @Cacheable(value="menu", keyGenerator = "keyGenerator",unless = "#result eq null")
+    @Cacheable(keyGenerator = "keyGenerator",unless = "#result eq null")
     @Override
     public List<Menu> selectMenuAll()
     {
@@ -29,7 +32,7 @@ public class MenuServiceImpl implements IMenuService {
         return menuMapper.selectMenuNormalAll();
     }
 
-    @Cacheable(value = "menu", key = "#root.args[0]", unless = "#result eq null ")
+    @Cacheable(key = "#root.args[0]", unless = "#result eq null ")
     @Override
     public Menu selectMenuById(Long menuId) {
         return menuMapper.selectMenuById(menuId);

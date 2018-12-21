@@ -91,7 +91,7 @@ public class RedisConfig extends CachingConfigurerSupport {
         {
              for (String value:arrCach)
              {
-                 System.out.println("缓存集合:" +value);
+                 System.out.println("初始化缓存集合:" +value);
                  cacheNames.add(value);
                  configMap.put(value,config);
              }

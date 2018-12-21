@@ -1,5 +1,6 @@
 package com.lin.sysmanage.controller;
 
+import com.lin.sysmanage.aspect.Log;
 import com.lin.sysmanage.entity.User;
 import com.lin.sysmanage.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,8 @@ public class UserController {
         }
         return "userlist";
     }
-
+    
+    @Log(descrption = "查询用户信息", actionType = "4")
     @ResponseBody
     @RequestMapping(value = "/getUserList")
     public List<User> getUserList(User user) {

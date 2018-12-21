@@ -7,95 +7,10 @@
     <meta name="description" content="overview &amp; stats"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
     <!-- bootstrap & fontawesome -->
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>  
-    <style>
-        ul {
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
-
-        .nav li {
-            border-bottom: 1px solid #eee;
-        }
-
-        .nav li a {
-            font-size: 14px;
-        }
-
-        #accordionMenu {
-            max-width: 300px;
-        }
-
-        .panel-body {
-            padding: 0;
-        }
-
-        .panel-group .panel + .panel {
-            margin-top: 0;
-            border-top: 0;
-        }
-
-        .panel-group .panel {
-            border-radius: 15px;
-            border: 1px solid #bce8f1;
-        }
-
-        .panel-default > .panel-heading {            
-            color: #333;
-            background-color: #d9edf7;
-            border-color: #bce8f1;
-            padding: 0;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            border-top-left-radius: 14px;
-            border-top-right-radius: 14px;
-            border-bottom-left-radius: 14px;
-            border-bottom-right-radius: 14px;
-        }
-
-        .panel-default > .panel-heading a {
-            display: block;
-            padding: 10px 15px;
-            text-decoration: none;
-        }
-
-        .panel-default > .panel-heading a:after {
-            content: "";
-            position: relative;
-            top: 1px;
-            display: inline-block;
-            font-family: 'Glyphicons Halflings';
-            font-style: normal;
-            font-weight: 400;
-            line-height: 1;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            float: right;
-            transition: transform .25s linear;
-            -webkit-transition: -webkit-transform .25s linear;
-        }
-
-        .panel-default > .panel-heading a[aria-expanded="true"] {
-            background-color: #d6e9c6;
-            border-top-left-radius: 14px;
-            border-top-right-radius: 14px;
-        }
-
-        .panel-default > .panel-heading a[aria-expanded="true"]:after {
-            content: "\e114";
-        }
-
-        .panel-default > .panel-heading a[aria-expanded="false"]:after {
-            content: "\e113";            
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/menu.css}"/>
 </head>
-
 <body>
-
 <div class="container-fluid">
     <nav class="navbar navbar-inverse" role="navigation">
         <div class="container-fluid">
@@ -103,15 +18,13 @@
                 <a class="navbar-brand" href="#">
                     <img src="/img/favicon.ico" height="100%"/>
                 </a>
-                <a class="navbar-brand " href="#">后台管理系统</a>
+                <a class="navbar-brand" href="#">后台管理系统</a>
             </div>
             <div class="collapse navbar-collapse" id="example-navbar-collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a>欢迎您,admin</a>
-                    </li>
-                    <li><a href="#">安全退出</a>
-                    </li>
-                </ul>
+                <div class="navbar-nav navbar-right">
+                    <a class="navbar-text">欢迎您,admin</a>
+                    <a class="navbar-text" href="#">安全退出</a>                  
+                </div>
             </div>
         </div>
     </nav>
@@ -131,11 +44,13 @@
                          aria-labelledby="headingOne">
                         <div class="panel-body">
                             <ul class="nav">
-                                <li><a href="#" onclick="add('2','用户管理','/user/index')"><i class="glyphicon glyphicon-user"></i>用户管理</a></li>
-                                <li><a href="#" onclick="add('3','菜单管理','/menu/menuList')"><i class="glyphicon glyphicon-th-list"></i>菜单管理</a></li>
+                                <li><a href="#" onclick="add('2','用户管理','/user/index')"><i
+                                        class="glyphicon glyphicon-user"></i>用户管理</a></li>
+                                <li><a href="#" onclick="add('3','菜单管理','/menu/menuList')"><i
+                                        class="glyphicon glyphicon-th-list"></i>菜单管理</a></li>
                                 <li><a href="#"><i class="glyphicon glyphicon-asterisk"></i>角色管理</a></li>
                                 <li><a href="#"><i class="glyphicon glyphicon-edit"></i>修改密码</a></li>
-                                <li><a href="#"><i class="glyphicon glyphicon-eye-open"></i>日志查看</a></li>
+                                <li><a href="#" onclick="add('6','日志查看','/sysLog/sysLogList')"><i class="glyphicon glyphicon-eye-open"></i>日志查看</a></li>
                             </ul>
                         </div>
                     </div>
@@ -169,7 +84,7 @@
             <div class="tab-content">
             </div>
             <!-- 相关代码结束 -->
-        </div>       
+        </div>
     </div>
 </div>
 <script th:src="@{/js/jquery.min.js}"></script>
@@ -181,7 +96,7 @@
 <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
 <script>
-    $(function () {        
+    $(function () {
         var item = {'id': '1', 'name': '首页', 'url': '/home/main', 'closable': false};
         closableTab.addTab(item);
     });
@@ -190,7 +105,7 @@
         var closable = 1;
         var item = {'id': id, 'name': name, 'url': url, 'closable': closable == 1 ? true : false};
         closableTab.addTab(item);
-    }    
+    }
 </script>
 </body>
 </html>

@@ -10,5 +10,5 @@ import java.lang.annotation.Target;
 public @interface Log {
     String descrption() default "";//描述
 
-    String actionType() default "";//操作的类型，1、添加 2、修改 3、删除 4、查询
+    String actionType() default "";//操作的类型，1查询 2新增 3修改 4删除 0其他
 }

@@ -12,7 +12,7 @@ public interface IUserService {
     
     //以下是基于MongoDB的操作
     void  saveUser(User user);
-
+    
     List<User> findUserByName(String userName);
 
     void updateUser(User user);

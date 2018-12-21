@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lin.sysmanage.dao.SysLogMapper">
+	<resultMap type="com.lin.sysmanage.entity.SysLogEntity" id="SysLogResult">
+		<id property="logId" column="log_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="userName" column="user_name"/>
+		<result property="ip" column="ip"/>
+		<result property="method" column="method"/>
+		<result property="operateParam" column="operate_param"/>
+		<result property="status" column="status"/>
+		<result property="operateType" column="operate_type"/>
+		<result property="operateUrl" column="operate_url"/>
+		<result property="operateTime" column="operate_time"/>
+		<result property="createTime" column="create_time"/>
+		<result property="errorMsg" column="error_msg"/>
+	</resultMap>
+
+	<insert id="saveSysLog">
+		INSERT INTO sys_log (
+			`user_id`, 
+			`user_name`, 
+			`ip`, 
+			`method`, 
+			`operate_param`, 
+			`status`, 
+			`operate_type`, 
+			`operate_url`, 
+			`operate_time`, 
+			`create_time`, 
+			`error_msg`
+		)
+		VALUES (
+			#{userId}, 
+			#{userName}, 
+			#{ip}, 
+			#{method}, 
+			#{operateParam}, 
+			#{status}, 
+			#{operateType}, 
+			#{operateUrl}, 
+			#{operateTime}, 
+			#{createTime}, 
+			#{errorMsg}
+		)
+		
+	</insert>
+
+	
+	<select id="listSysLog" parameterType="com.lin.sysmanage.entity.SysLogEntity" resultMap="SysLogResult" >
+		SELECT
+			`log_id`, 
+			`user_id`, 
+			`user_name`, 
+			`ip`, 
+			`method`, 
+			`operate_param`, 
+			`status`, 
+			`operate_type`, 
+			`operate_url`, 
+			`operate_time`, 
+			`create_time`, 
+			`error_msg`
+		FROM
+			sys_log
+		<where>
+			<if test="userName != null and userName != ''">
+				AND user_name like concat('%', #{userName}, '%')
+			</if>
+			<if test="operateType != null and operateType != ''">
+				AND operate_type = #{operateType}
+			</if>
+		</where>		
+	</select>
+
+	<select id="getSysLogListPage" parameterType="com.lin.sysmanage.entity.SysLogEntity" resultMap="SysLogResult" >
+		SELECT
+		`log_id`,
+		`user_id`,
+		`user_name`,
+		`ip`,
+		`method`,
+		`operate_param`,
+		`status`,
+		`operate_type`,
+		`operate_url`,
+		`operate_time`,
+		`create_time`,
+		`error_msg`
+		FROM
+		sys_log
+		<where>
+			<if test="userName != null and userName != ''">
+				AND user_name like concat('%', #{userName}, '%')
+			</if>
+			<if test="operateType != null and operateType != ''">
+				AND operate_type = #{operateType}
+			</if>
+			<if test="status != null and status != ''">
+				AND status = #{status}
+			</if>
+		</where>
+        order by create_time desc
+		LIMIT #{pageNumber},#{pageSize}
+      
+	</select>
+	
+	<select id="getTotal" resultType="java.lang.Integer">
+		SELECT count(1) FROM sys_log 
+		<where>
+			<if test="userName != null and userName != ''">
+				AND user_name like concat('%', #{userName}, '%')
+			</if>
+			<if test="operateType != null and operateType != ''">
+				AND operate_type = #{operateType}
+			</if>
+			<if test="status != null and status != ''">
+				AND status = #{status}
+			</if>
+		</where>
+
+	</select>
+
+	<delete id="batchRemove">
+		DELETE
+		FROM
+			sys_log
+		WHERE
+			log_id IN
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

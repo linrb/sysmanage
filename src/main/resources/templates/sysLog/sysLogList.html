@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta charset="utf-8"/>
+    <title>用户管理 - Admin</title>
+
+    <meta name="description" content="along with an email converter tool"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+
+    <!-- bootstrap-table 表格插件样式 -->
+    <link th:href="@{/js/plugins/bootstrap-table/bootstrap-table.min.css}" rel="stylesheet"/>
+
+    <style>
+        html, body {
+            margin: 0px;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">查询条件</h3>
+    </div>
+    <div class="panel-body">
+        <form class="form-inline" role="form" id="queryForm">
+            <div class="form-group">
+                <label for="txtUserName">操作用户:</label>
+                <input type="text" class="form-control" name="txtUserName" id="txtUserName"
+                       placeholder="请输入用户名称">
+            </div>
+            <div class="form-group">
+                <label for="selStatus">操作状态:</label>
+                <select class="form-control" id="selStatus">
+                    <option value="">全部</option>
+                    <option value="0">正常</option>
+                    <option value="1">异常</option>                  
+                </select>
+            </div>
+            <div class="form-group">
+                <input class="btn btn-primary" type="button" value="查询" onclick="SearchData()">
+            </div>
+        </form>
+    </div>
+    <div id="toolbar" class="btn-group" style="padding-bottom:15px">
+        <div class="col-sm-12 text-left">
+            <button id="btn_authorize" type="button" class="btn btn-info" onclick="batchRemove()">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>批量删除
+            </button>
+        </div>
+    </div>
+    <div id="receiveLogTab" class="tab-pane">
+        <div class="table-responsive">
+            <table id="table"></table>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<!-- bootstrap-table 表格插件 -->
+<script th:src="@{/js/plugins/bootstrap-table/bootstrap-table.js}"></script>
+<script th:src="@{/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.js}"></script>
+<script th:src="@{/js/plugins/bootstrap-table/extensions/mobile/bootstrap-table-mobile.js}"></script>
+<script th:src="@{/js/plugins/bootstrap-table/extensions/toolbar/bootstrap-table-toolbar.js}"></script>
+<script th:src="@{/js/plugins/bootstrap-table/extensions/export/bootstrap-table-export.js}"></script>
+<script th:src="@{/js/plugins/bootstrap-table/extensions/export/tableExport.js}"></script>
+<script th:src="@{/js/plugins/layer/layer.min.js}"></script>
+
+<script inline="javascript">
+    var $table;
+    $(function () {
+        //1.初始化Table
+        InitMainTable();
+    });
+
+    //初始化bootstrap-table的内容
+    function InitMainTable() {
+        //记录页面bootstrap-table全局变量$table，方便应用
+        var queryUrl = '/sysLog/getLogListPage';
+        $table = $('#table').bootstrapTable({
+            method: 'post',
+            contentType:'application/x-www-form-urlencoded; charset=UTF-8',
+            dataType: 'json',
+            url: queryUrl,
+            striped: true,                      //是否显示行间隔色
+            toolbar: '#toolbar',                //工具按钮用哪个容器
+            //showRefresh: true,                  //是否显示刷新按钮
+            sidePagination: 'server',//server:服务器端分页|client：前端分页
+            pageNumber: 1,                       //初始化加载第一页
+            pageSize: 10,                       //每页的记录行数
+            pageList: [10, 25, 50, 100],        //可供选择的每页的行数
+            pagination: true,                   //是否显示分页
+            queryParamsType: '',//查询参数类型，默认是'limit'。如果想获取页面偏移量offset和页面大小pageSize，参数queryParamsType可不配;如果想获取当前页数pageNumber和页面大小pageSize，请配置为queryParamsType: ''.
+            queryParams: getQueryParams,
+            clickToSelect: true,
+            cache: false,
+            uniqueId: "logId", // 每一行的唯一标识，一般为主键列
+            columns: [
+                {checkbox: true},
+                {field: "userId", title: "用户ID", width: "100px", visible: false},
+                {field: "userName", title: "用户名", width: "100px"},
+                {field: "ip", title: "主机地址", width: "100px"},
+                {field: "method", title: "方法名称", width: "100px", formatter: "dataFormatter"},
+                {field: "operateParam", title: "请求参数", width: "100px"},
+                {field: "status", title: "操作状态", width: "100px", formatter: "statusFormatter"},
+                {field: "operateType", title: "业务类型", width: "100px"},
+                {field: "operateUrl", title: "请求URL", width: "100px"},
+                {field: "operateTime", title: "响应时间(毫秒)", width: "100px", align: 'center'},
+                {field: "createTime", title: "操作时间", width: "100px", align: 'center'},
+                {field: "errorMsg", title: "错误消息", width: "100px", formatter: "dataFormatter"}
+            ]
+        });
+    };
+
+    //查询条件
+    function getQueryParams(params) {
+        return {
+            pageSize: params.pageSize,// 每页显示数量
+            pageNumber: params.pageNumber, // 页索引
+            userName: $.trim($("#txtUserName").val()),
+            status:$("#selStatus").val()
+        };
+    }
+
+    //查询事件
+    function SearchData() {
+        $('#table').bootstrapTable('refresh', {pageNumber: 1});
+    }
+
+    function batchRemove() {
+        var selRows = $table.bootstrapTable("getSelections");
+        if (selRows.length == 0) {
+            alert("请至少选择一行");
+            return;
+        }
+
+        var arrays = new Array();// 声明一个数组
+        $(selRows).each(function () {// 通过获得别选中的来进行遍历
+            arrays.push(this.logId);// cid为获得到的整条数据中的一列
+        });
+        var ids = arrays.join(','); // 获得要删除的id      
+     
+         deleteSysLog(ids);
+    }
+
+    //删除
+    function deleteSysLog(ids) {
+        layer.confirm('确认要删除所选的数据吗？', function (index) {
+            $.ajax({
+                type: 'POST',
+                url: '/sysLog/batchRemove',
+                data: {ids: ids},
+                success: function (data) {                   
+                    layer.msg(data.msg, {icon: 1, time: 2000});
+                    //重新加载数据
+                    $('#table').bootstrapTable('refresh');
+                },
+                error: function (data) {
+                    console.log(data.msg);
+                },
+            });
+        });
+    }
+
+    //超长数据处理
+    function dataFormatter(value, row, index) {
+        value = value ? value : '';
+        var length = value.length;
+        if (length && length > 20) {
+            if (value.length > 20) {
+                return "<span title='" + value + "'>" + value.substring(0, 20) + "..." + "</span>";
+            } else {
+                return "<span title='" + value + "'>" + value.substring(0, value.length) + "</span>";
+            }
+        } else {
+            return "";
+        }
+    }
+
+    // 格式化状态
+    function statusFormatter(value, row, index) {
+        if (value === '1') {
+            return '<span class="label label-warning">异常</span>';
+        } else {
+            return '<span class="label label-success">正常</span>';
+        }//0正常 1异常
+    }
+</script>
+</body>
+</html>
