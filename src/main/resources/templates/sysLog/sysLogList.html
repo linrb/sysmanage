@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta charset="utf-8"/>
-    <title>用户管理 - Admin</title>
+    <title>日志管理 - Admin</title>
 
     <meta name="description" content="along with an email converter tool"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
@@ -67,8 +67,6 @@
 <script th:src="@{/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.js}"></script>
 <script th:src="@{/js/plugins/bootstrap-table/extensions/mobile/bootstrap-table-mobile.js}"></script>
 <script th:src="@{/js/plugins/bootstrap-table/extensions/toolbar/bootstrap-table-toolbar.js}"></script>
-<script th:src="@{/js/plugins/bootstrap-table/extensions/export/bootstrap-table-export.js}"></script>
-<script th:src="@{/js/plugins/bootstrap-table/extensions/export/tableExport.js}"></script>
 <script th:src="@{/js/plugins/layer/layer.min.js}"></script>
 
 <script inline="javascript">
@@ -103,12 +101,12 @@
             columns: [
                 {checkbox: true},
                 {field: "userId", title: "用户ID", width: "100px", visible: false},
-                {field: "userName", title: "用户名", width: "100px"},
+                {field: "userName", title: "用户名", align: 'center',width: "100px"},
                 {field: "ip", title: "主机地址", width: "100px"},
                 {field: "method", title: "方法名称", width: "100px", formatter: "dataFormatter"},
                 {field: "operateParam", title: "请求参数", width: "100px"},
-                {field: "status", title: "操作状态", width: "100px", formatter: "statusFormatter"},
-                {field: "operateType", title: "业务类型", width: "100px"},
+                {field: "status", title: "操作状态", align: 'center',width: "100px", formatter: "statusFormatter"},
+                {field: "operateType", title: "操作描述", width: "100px"},
                 {field: "operateUrl", title: "请求URL", width: "100px"},
                 {field: "operateTime", title: "响应时间(毫秒)", width: "100px", align: 'center'},
                 {field: "createTime", title: "操作时间", width: "100px", align: 'center'},

@@ -3,6 +3,7 @@ package com.lin.sysmanage.controller;
 import com.lin.sysmanage.aspect.Log;
 import com.lin.sysmanage.entity.User;
 import com.lin.sysmanage.service.IUserService;
+import com.lin.sysmanage.utils.enums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +32,7 @@ public class UserController {
         return "userlist";
     }
     
-    @Log(descrption = "查询用户信息", actionType = "4")
+    @Log(descrption = "查询用户信息", operationType = enums.OperationType.SELECT)
     @ResponseBody
     @RequestMapping(value = "/getUserList")
     public List<User> getUserList(User user) {

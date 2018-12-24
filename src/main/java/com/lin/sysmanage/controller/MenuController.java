@@ -4,6 +4,7 @@ import com.lin.sysmanage.aspect.Log;
 import com.lin.sysmanage.cache.RedisUtils;
 import com.lin.sysmanage.entity.Menu;
 import com.lin.sysmanage.service.IMenuService;
+import com.lin.sysmanage.utils.enums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +28,7 @@ public class MenuController {
     }
 
 
-    @Log(descrption = "查询菜单信息", actionType = "4")
+    @Log(descrption = "查询菜单信息", operationType = enums.OperationType.SELECT)
     @RequestMapping("/list")
     @ResponseBody
     public List<Menu> list() {
@@ -45,7 +46,7 @@ public class MenuController {
     }
 
 
-    @Log(descrption = "查询菜单信息", actionType = "4")
+    @Log(descrption = "查询菜单信息", operationType = enums.OperationType.SELECT)
     @RequestMapping("/selectMenuById")
     @ResponseBody
     public Menu selectMenuById(Long menuId) {

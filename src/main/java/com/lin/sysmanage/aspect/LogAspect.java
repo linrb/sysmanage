@@ -109,10 +109,11 @@ public class LogAspect {
         }
 
         String methodName = (joinPoint.getTarget().getClass().getName() + "." + classMethodName + "()");
+        String methodDesc=getMthodDescription(joinPoint)+",操作类型="+getMthodOperationType(joinPoint  );
         log.info( "请求的类名:" + className );
         log.info( "请求方法:" + methodName );
         log.info( "请求方式:" + method );
-        log.info( "操作方式:" + getMthodType( joinPoint ) );
+        log.info( "操作描述:" + methodDesc);
         log.info( "请求参数:" + jsonParams );
         log.info( "请求IP:" + ip );
         log.info( "请求地址:" + url );
@@ -124,7 +125,7 @@ public class LogAspect {
         sysLogEntity.setIp( ip );
         sysLogEntity.setStatus( status );
         sysLogEntity.setMethod( methodName );
-        sysLogEntity.setOperateType( getMthodType( joinPoint ) );
+        sysLogEntity.setOperateType( methodDesc );
         sysLogEntity.setOperateParam( jsonParams );
         sysLogEntity.setOperateTime( Long.toString( time ) );
         sysLogEntity.setOperateUrl( url );
@@ -241,8 +242,12 @@ public class LogAspect {
         return paramM;
     }
 
-    //操作类型，用于区分操作
-    private static String getMthodType(JoinPoint joinPoint) {
+    /**
+     * 获取注解中对方法的描述信息
+     * @param joinPoint
+     * @return
+     */
+    private static String getMthodDescription (JoinPoint joinPoint) {
         String targetName = joinPoint.getTarget().getClass().getName();
         String methodName = joinPoint.getSignature().getName();
         Object[] arguments = joinPoint.getArgs();
@@ -254,16 +259,46 @@ public class LogAspect {
         }
         assert targetClass != null;
         Method[] methods = targetClass.getMethods();
-        String type = "b";
+        String description  = "无";
         for (Method method : methods) {
             if (method.getName().equals( methodName )) {
                 Class[] clazzs = method.getParameterTypes();
                 if (clazzs.length == arguments.length) {
-                    type = method.getAnnotation( Log.class ).descrption();
+                    description  = method.getAnnotation( Log.class ).descrption();
                     break;
                 }
             }
         }
-        return type;
+        return description;
+    }
+
+    /**
+     * 获取注解中对方法的操作类型
+     * @param joinPoint
+     * @return
+     */
+    private static String getMthodOperationType (JoinPoint joinPoint) {
+        String targetName = joinPoint.getTarget().getClass().getName();
+        String methodName = joinPoint.getSignature().getName();
+        Object[] arguments = joinPoint.getArgs();
+        Class targetClass = null;
+        try {
+            targetClass = Class.forName( targetName );
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        assert targetClass != null;
+        Method[] methods = targetClass.getMethods();
+        String description  = "无";
+        for (Method method : methods) {
+            if (method.getName().equals( methodName )) {
+                Class[] clazzs = method.getParameterTypes();
+                if (clazzs.length == arguments.length) {
+                    description  = method.getAnnotation( Log.class ).operationType().getValue();
+                    break;
+                }
+            }
+        }
+        return description;
     }
 }
