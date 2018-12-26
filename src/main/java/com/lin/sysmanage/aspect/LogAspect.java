@@ -1,6 +1,5 @@
 package com.lin.sysmanage.aspect;
 
-
 import com.alibaba.fastjson.JSON;
 import com.lin.sysmanage.entity.SysLogEntity;
 import com.lin.sysmanage.service.ISysLogService;
@@ -12,13 +11,13 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -36,10 +35,7 @@ public class LogAspect {
     private static Logger log = Log4jUtils.getLog( LogAspect.class );
 
     @Autowired
-    private ISysLogService sysLogService;
-
-    @Autowired
-    private MongoTemplate mongoTemplate;
+    private ISysLogService sysLogService;   
 
     /**
      * 切入点
@@ -83,13 +79,18 @@ public class LogAspect {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         //请求的IP
         String ip = getIP( request );
-        //请求的参数（两特别是方式）
+        //请求的参数（两种方式）
+        String jsonParams = "";
         //  Object[] args = joinPoint.getArgs();//方式一
+        /*if (args.length > 0) {
+            //将参数所在的数组转换成json
+            jsonParams = JSON.toJSONString( args );
+        }*/
         Map<String, String[]> params = request.getParameterMap();//方式二
-        Map<String, String> resMap = transformParameterMap(params,false);
-        String jsonParams ="";
-        if (resMap != null&&resMap.size()>0) {
-            jsonParams = JSON.toJSONString(resMap );
+        Map<String, String> resMap = transformParameterMap( params, false );
+
+        if (resMap != null && resMap.size() > 0) {
+            jsonParams = JSON.toJSONString( resMap );
         }
         // 获取请求的类名
         String className = joinPoint.getSignature().getDeclaringTypeName();
@@ -97,23 +98,15 @@ public class LogAspect {
         String classMethodName = joinPoint.getSignature().getName();
         // 获取请求方式
         String method = request.getMethod();
-
+        //获取请求地址
         String url = request.getRequestURI();
 
-        //请求的参数
-        String paramsArr = "";
-        Object[] args = joinPoint.getArgs();
-        if (args.length > 0) {
-            //将参数所在的数组转换成json
-            paramsArr = JSON.toJSONString( args );
-        }
-
         String methodName = (joinPoint.getTarget().getClass().getName() + "." + classMethodName + "()");
-        String methodDesc=getMthodDescription(joinPoint)+",操作类型="+getMthodOperationType(joinPoint  );
+        String methodDesc = getMthodDescription( joinPoint ) + ",操作类型=" + getMthodOperationType( joinPoint );
         log.info( "请求的类名:" + className );
         log.info( "请求方法:" + methodName );
         log.info( "请求方式:" + method );
-        log.info( "操作描述:" + methodDesc);
+        log.info( "操作描述:" + methodDesc );
         log.info( "请求参数:" + jsonParams );
         log.info( "请求IP:" + ip );
         log.info( "请求地址:" + url );
@@ -129,54 +122,69 @@ public class LogAspect {
         sysLogEntity.setOperateParam( jsonParams );
         sysLogEntity.setOperateTime( Long.toString( time ) );
         sysLogEntity.setOperateUrl( url );
-        Date date = new Date();
-        SimpleDateFormat format = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
-        //从前端或者自己模拟一个日期格式，转为String即可
-        String dateStr = format.format( date );
-        sysLogEntity.setCreateTime( dateStr );
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//将时间格式转换成符合Timestamp要求的格式.
+        String strTime = df.format(new Date());//获得系统时间.
+        Timestamp ts = Timestamp.valueOf(strTime);//把时间转换      
+        sysLogEntity.setCreateTime( ts );
         sysLogEntity.setErrorMsg( errMsg );
         sysLogService.saveSysLog( sysLogEntity );
-        //mongoTemplate.save(sysLogEntity);
-
+        //sysLogService.svaeSysLogToMongoDB(sysLogEntity);
     }
 
     //获取请求IP
     public String getIP(HttpServletRequest request) {
-        String ip = request.getHeader( "x-forwarded-for" );
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase( ip )) {
-            ip = request.getHeader( "Proxy-Client-IP" );
+        if (request == null)
+        {
+            return "unknown";
         }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase( ip )) {
-            ip = request.getHeader( "WL-Proxy-Client-IP" );
+        String ip = request.getHeader("x-forwarded-for");
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip))
+        {
+            ip = request.getHeader("Proxy-Client-IP");
         }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase( ip )) {
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip))
+        {
+            ip = request.getHeader("X-Forwarded-For");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip))
+        {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip))
+        {
+            ip = request.getHeader("X-Real-IP");
+        }
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip))
+        {
             ip = request.getRemoteAddr();
         }
-        return ip;
+
+        return "0:0:0:0:0:0:0:1".equals(ip) ? "127.0.0.1" : ip;
     }
 
     /**
      * 动态获取 request中的值
+     *
      * @param parameterMap
      * @param isNull
      * @return
      */
-    private Map transformParameterMap(Map parameterMap,boolean isNull)
-    {
-        Map returnMap = new HashMap();
-        if(isNull)
-        {
-            returnMap=transformParameterMapWithNull( parameterMap );
-        }else 
-        {
-            returnMap=transformParameterMapWithNotNull(parameterMap  );
+    private Map transformParameterMap(Map parameterMap, boolean isNull) {
+        Map returnMap;
+        if (isNull) {
+            returnMap = transformParameterMapWithNull( parameterMap );
+        } else {
+            returnMap = transformParameterMapWithNotNull( parameterMap );
         }
-        return  returnMap;
+        return returnMap;
     }
-    
-    
+
+
     /**
      * 动态获取 request中的值并去除空值
+     *
      * @param parameterMap
      * @return
      */
@@ -218,36 +226,39 @@ public class LogAspect {
 
     /**
      * 动态获取 request中的值包含空值
+     *
      * @param properties
      * @return
      */
-    private Map<String,Object> transformParameterMapWithNull(Map<String,Object> properties){
+    private Map<String, Object> transformParameterMapWithNull(Map<String, Object> properties) {
         Map<String, Object> paramM = new HashMap<String, Object>();
-        for(Map.Entry<String,Object> entrys:properties.entrySet()){
-            Object valueObj =   entrys.getValue();
+        for (Map.Entry<String, Object> entrys : properties.entrySet()) {
+            Object valueObj = entrys.getValue();
             String value = "";
-            if(null==valueObj){
+            if (null == valueObj) {
                 value = "";
-            }else if(valueObj instanceof String[]){
-                String[] values = (String[])valueObj;
-                for(int i=0;i<values.length;i++){
+            } else if (valueObj instanceof String[]) {
+                String[] values = (String[]) valueObj;
+                for (int i = 0; i < values.length; i++) {
                     value += values[i] + ",";
                 }
-                value = value.substring(0, value.length()-1);
-            }else{
+                value = value.substring( 0, value.length() - 1 );
+            } else {
                 value = valueObj.toString();
             }
-            paramM.put(entrys.getKey(), value);
+            paramM.put( entrys.getKey(), value );
         }
         return paramM;
     }
 
+
     /**
      * 获取注解中对方法的描述信息
+     *
      * @param joinPoint
      * @return
      */
-    private static String getMthodDescription (JoinPoint joinPoint) {
+    private static String getMthodDescription(JoinPoint joinPoint) {
         String targetName = joinPoint.getTarget().getClass().getName();
         String methodName = joinPoint.getSignature().getName();
         Object[] arguments = joinPoint.getArgs();
@@ -257,14 +268,13 @@ public class LogAspect {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        assert targetClass != null;
         Method[] methods = targetClass.getMethods();
-        String description  = "无";
+        String description = "无";
         for (Method method : methods) {
             if (method.getName().equals( methodName )) {
                 Class[] clazzs = method.getParameterTypes();
                 if (clazzs.length == arguments.length) {
-                    description  = method.getAnnotation( Log.class ).descrption();
+                    description = method.getAnnotation( Log.class ).descrption();
                     break;
                 }
             }
@@ -274,10 +284,11 @@ public class LogAspect {
 
     /**
      * 获取注解中对方法的操作类型
+     *
      * @param joinPoint
      * @return
      */
-    private static String getMthodOperationType (JoinPoint joinPoint) {
+    private static String getMthodOperationType(JoinPoint joinPoint) {
         String targetName = joinPoint.getTarget().getClass().getName();
         String methodName = joinPoint.getSignature().getName();
         Object[] arguments = joinPoint.getArgs();
@@ -287,18 +298,19 @@ public class LogAspect {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        assert targetClass != null;
+
         Method[] methods = targetClass.getMethods();
-        String description  = "无";
+
+        String operationType = "无";
         for (Method method : methods) {
             if (method.getName().equals( methodName )) {
                 Class[] clazzs = method.getParameterTypes();
                 if (clazzs.length == arguments.length) {
-                    description  = method.getAnnotation( Log.class ).operationType().getValue();
+                    operationType = method.getAnnotation( Log.class ).operationType().getValue();
                     break;
                 }
             }
         }
-        return description;
+        return operationType;
     }
 }

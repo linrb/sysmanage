@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface ISysLogService {
     /**
-     * 新增
+     * 保存日志到数据库
      * @param sysLog
      */
     void  saveSysLog(SysLogEntity sysLog);
@@ -39,4 +39,10 @@ public interface ISysLogService {
      * @return
      */
     int batchRemove(Long[] id);
+
+    /**
+     * 保存日志到MongoDB
+     * @param sysLog
+     */
+    void  svaeSysLogToMongoDB(SysLogEntity sysLog);
 }

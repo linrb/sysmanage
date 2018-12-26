@@ -70,4 +70,9 @@ public class SysLogServiceImpl implements ISysLogService {
     public int batchRemove(Long[] id) {
         return sysLogMapper.batchRemove(id);
     }
+
+    @Override
+    public void svaeSysLogToMongoDB(SysLogEntity sysLog) {
+        mongoTemplate.save( sysLog );
+    }
 }

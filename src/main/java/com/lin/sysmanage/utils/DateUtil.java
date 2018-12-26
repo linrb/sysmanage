@@ -5,15 +5,18 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DateUtil {
+    
+    private static final String DEFAULT_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    
     /**
      * 将date类型准成指定format格式的字符串
      *
-     * @param day    日期
+     * @param date    日期
      * @param format 指定格式
      * @return
      */
-    public static String date2String(Date day, String format) {
-        String dateStr = new SimpleDateFormat(format).format(day.getTime());
+    public static String date2String(Date date, String format) {
+        String dateStr = new SimpleDateFormat(format).format(date.getTime());
         return dateStr;
     }
 
@@ -32,6 +35,15 @@ public class DateUtil {
             e.printStackTrace();
         }
         return strDate;
+    }
+   
+
+    /**
+     * 得到当前日期字符串 格式（yyyy-MM-dd） pattern可以为："yyyy-MM-dd" "HH:mm:ss"
+     */
+    public static String getDate(String pattern) {       
+        String dateStr = new SimpleDateFormat(pattern).format(new Date());
+        return  dateStr;
     }
 
 }

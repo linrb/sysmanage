@@ -1,76 +1,82 @@
 package com.lin.sysmanage.entity;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
+import java.sql.Timestamp;
 
 
 /**
  * 系统日志记录表
  */
 public class SysLogEntity extends Page implements Serializable  {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * 日志主键
 	 */
 	private Integer logId;
-	
+
 	/**
 	 * 用户ID
 	 */
 	private Integer userId;
-	
+
 	/**
 	 * 用户名
 	 */
 	private String userName;
-	
+
 	/**
 	 * 主机地址
 	 */
 	private String ip;
-	
+
 	/**
 	 * 方法名称
 	 */
 	private String method;
-	
+
 	/**
 	 * 请求参数
 	 */
 	private String operateParam;
-	
+
 	/**
 	 * 操作状态（0正常 1异常）
 	 */
 	private String status;
-	
+
 	/**
 	 * 业务类型（1查询 2新增 3修改 4删除 0其他）
 	 */
 	private String operateType;
-	
+
 	/**
 	 * 请求URL
 	 */
 	private String operateUrl;
-	
+
 	/**
 	 * 响应时间
 	 */
 	private String operateTime;
-	
+
 	/**
 	 * 操作时间
 	 */
-	private String createTime;
-	
+
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	private Timestamp createTime;
+
 	/**
 	 * 错误消息
 	 */
 	private String errorMsg;
-	
+
 
 	public SysLogEntity() {
 		super();
@@ -90,7 +96,7 @@ public class SysLogEntity extends Page implements Serializable  {
 	public Integer getLogId() {
 		return logId;
 	}
-	
+
     /**
      * setter for userId
      * @param userId
@@ -105,7 +111,7 @@ public class SysLogEntity extends Page implements Serializable  {
 	public Integer getUserId() {
 		return userId;
 	}
-	
+
     /**
      * setter for userName
      * @param userName
@@ -120,7 +126,7 @@ public class SysLogEntity extends Page implements Serializable  {
 	public String getUserName() {
 		return userName;
 	}
-	
+
     /**
      * setter for ip
      * @param ip
@@ -135,7 +141,7 @@ public class SysLogEntity extends Page implements Serializable  {
 	public String getIp() {
 		return ip;
 	}
-	
+
     /**
      * setter for method
      * @param method
@@ -150,7 +156,7 @@ public class SysLogEntity extends Page implements Serializable  {
 	public String getMethod() {
 		return method;
 	}
-	
+
     /**
      * setter for operateParam
      * @param operateParam
@@ -165,7 +171,7 @@ public class SysLogEntity extends Page implements Serializable  {
 	public String getOperateParam() {
 		return operateParam;
 	}
-	
+
     /**
      * setter for status
      * @param status
@@ -180,7 +186,7 @@ public class SysLogEntity extends Page implements Serializable  {
 	public String getStatus() {
 		return status;
 	}
-	
+
     /**
      * setter for operateType
      * @param operateType
@@ -195,7 +201,7 @@ public class SysLogEntity extends Page implements Serializable  {
 	public String getOperateType() {
 		return operateType;
 	}
-	
+
     /**
      * setter for operateUrl
      * @param operateUrl
@@ -210,7 +216,7 @@ public class SysLogEntity extends Page implements Serializable  {
 	public String getOperateUrl() {
 		return operateUrl;
 	}
-	
+
     /**
      * setter for operateTime
      * @param operateTime
@@ -225,23 +231,23 @@ public class SysLogEntity extends Page implements Serializable  {
 	public String getOperateTime() {
 		return operateTime;
 	}
-	
+
     /**
      * setter for createTime
      * @param createTime
      */
-	public void setCreateTime(String createTime) {
+	public void setCreateTime(Timestamp createTime) {
 		this.createTime = createTime;
 	}
 
     /**
      * getter for createTime
      */
-	public String getCreateTime()
+	public Timestamp getCreateTime()
 	{
 		return createTime;
 	}
-	
+
     /**
      * setter for errorMsg
      * @param errorMsg
@@ -256,5 +262,5 @@ public class SysLogEntity extends Page implements Serializable  {
 	public String getErrorMsg() {
 		return errorMsg;
 	}
-	
+
 }
