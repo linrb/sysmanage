@@ -8,61 +8,572 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
     <!-- bootstrap & fontawesome -->
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/js/plugins/jquery-Step/jquery.step.css}"/>
+    <!-- bootstrap-table 表格插件样式 -->
+    <link th:href="@{/js/plugins/bootstrap-table/bootstrap-table.min.css}" rel="stylesheet"/>
     <style>
         html, body {
             margin: 0px;
             height: 100%;
         }
+        .package-status {
+            padding: 18px 0 0 0
+        }
+        .package-status .status-list {
+            margin: -5px 0 0;
+            padding: 0 0 0 8px;
+            list-style: none;
+        }
+        .package-status .status-list li {
+            border-left: 2px solid #d9d9d9;
+            text-align: left;
+        }
+        .package-status .status-list li:before { /* 流程点的样式 */
+            content: '';
+            border: 3px solid #f3f3f3;
+            background-color: #d9d9d9;
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 10px;
+            margin-left: -9px;
+            margin-right: 10px
+        }
+        .package-status .status-list .latest:before {
+            background-color: #0dad12;
+            border-color: #f8e9e4;
+        }
+        .package-status .status-box {
+            overflow: hidden
+        }
+
+        .package-status .status-list li {
+            height: auto;
+        }
+        .package-status .status-list {
+            margin-top: -8px
+        }
+        .package-status .status-box {
+            position: relative
+        }
+        .package-status .status-box:before {
+            content: " ";
+            background-color: #f3f3f3;
+            display: block;
+            position: absolute;
+            top: -8px;
+            left: 20px;
+            width: 10px;
+            height: 4px
+        }
+        .package-status .status-list {
+            margin-top: 0px;
+        }
+        /* .package-status .status-list .latest{border:none} */
+        /* .package-status .status-list li{margin-bottom:-2px} */
+
+
+        .status-list li:not(:first-child) {
+            padding-top: 10px;
+        }
+        .status-content-before {
+            text-align: left;
+            margin-left: 25px;
+            margin-top: -20px;
+        }
+        .status-content-latest {
+            text-align: left;
+            margin-left: 25px;
+            color: green;
+            margin-top: -20px;
+        }
+        .status-time-before {
+            text-align: left;
+            margin-left: 25px;
+            font-size: 10px;
+            margin-top: 5px;
+
+        }
+        .status-time-latest {
+            text-align: left;
+            margin-left: 25px;
+            color: green;
+            font-size: 10px;
+            margin-top: 5px;
+        }
+        .status-line {
+            border-bottom: 1px solid #ccc;
+            margin-left: 25px;
+            margin-top: 10px;
+        }
+
     </style>
 </head>
 <body>
-<div class="content">
-    <strong>Spring有如下优点：</strong>
-
-    <p> 1.低侵入式设计，代码污染极低 </p>
-
-    <p> 2.独立于各种应用服务器，基于Spring框架的应用，可以真正实现Write Once,Run Anywhere的承诺 </p>
-
-    <p> 3.Spring的DI机制降低了业务对象替换的复杂性，提高了组件之间的解耦 </p>
-
-    <p> 4.Spring的AOP支持允许将一些通用任务如安全、事务、日志等进行集中式管理，从而提供了更好的复用 </p>
-
-    <p> 5.Spring的ORM和DAO提供了与第三方持久层框架的良好整合，并简化了底层的数据库访问 </p>
-
-    <p> 6.Spring并不强制应用完全依赖于Spring，开发者可自由选用Spring框架的部分或全部 </p>
-
-
-    <strong> 基本框架</strong>
-
-    <p> Spring 框架是一个分层架构，由 7 个定义良好的模块组成。</p>
-
-    <p> Spring 模块构建在核心容器之上，核心容器定义了创建、配置和管理 bean 的方式，如图所示：</p>
-
-    <p>组成Spring框架的每个模块（或组件）都可以单独存在，或者与其他一个或多个模块联合实现。每个模块的功能如下：</p>
-
-    <p> 1、核心容器：核心容器提供 Spring 框架的基本功能(Spring Core)。核心容器的主要组件是 BeanFactory，它是工厂模式的实现。BeanFactory 使用控制反转（IOC）</p>
-    <p>   模式将应用程序的配置和依赖性规范与实际的应用程序代码分开。</p>
-
-    <p> 2、Spring 上下文：Spring 上下文是一个配置文件，向 Spring框架提供上下文信息。Spring 上下文包括企业服务，例如JNDI、EJB、电子邮件、国际化、校验和调度功能。</p>
-
-    <p> 3、Spring AOP：通过配置管理特性，Spring AOP 模块直接将面向切面的编程功能集成到了 Spring 框架中。所以，可以很容易地使 Spring 框架管理的任何对象支持AOP。Spring AOP 模块为基于
-    <p>  Spring 的应用程序中的对象提供了事务管理服务。通过使用 Spring AOP，不用依赖 EJB 组件，就可以将声明性事务管理集成到应用程序中。</p>
-    
-    <p> 4、Spring DAO：JDBCDAO抽象层提供了有意义的异常层次结构，可用该结构来管理异常处理和不同数据库供应商抛出的错误消息。异常层次结构简化了错误处理，并且极大地降低了需要编写的异常代码数量（例如打开和关闭连接）。</p>
-    <p>  Spring DAO 的面向 JDBC 的异常遵从通用的 DAO 异常层次结构。</p>
-
-    <p> 5、Spring ORM：Spring 框架插入了若干个ORM框架，从而提供了 ORM 的对象关系工具，其中包括JDO、Hibernate和iBatisSQL Map。所有这些都遵从 Spring 的通用事务和 DAO
-           异常层次结构。</p>
-
-    <p> 6、Spring Web 模块：Web 上下文模块建立在应用程序上下文模块之上，为基于 Web 的应用程序提供了上下文。所以，Spring框架支持与 Jakarta Struts 的集成。</p>
-    <p>   Web模块还简化了处理多部分请求以及将请求参数绑定到域对象的工作。</p>
-
-    <p> 7、Spring MVC 框架：MVC框架是一个全功能的构建 Web应用程序的 MVC 实现。通过策略接口，MVC框架变成为高度可配置的，MVC 容纳了大量视图技术，其中包括 JSP、Velocity、Tiles、iText</p>
-    <p>   和POI。模型由javabean构成，存放于Map；视图是一个接口，负责显示模型；控制器表示逻辑代码，是Controller的实现。Spring框架的功能可以用在任何J2EE服务器中，大多数功能也适用于不受管理的环境。</p>
-    <p>   Spring的核心要点是：支持不绑定到特定 J2EE服务的可重用业务和数据访问对象。毫无疑问，这样的对象可以在不同J2EE 环境（Web 或EJB）、独立应用程序、测试环境之间重用。</p>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">订单详情</h3>
+        <div class="steps"></div>
+    </div>
+    <div class="panel-body">
+        <div class="form-inline">
+            <div class="form-group">
+                <button class="btn btn-success" onClick="previousStep()">上一步</button>
+                <button class="btn btn-warning" onClick="nextStep()">下一步</button>
+                <br/>
+                <button class="btn btn-info " onclick='gotoStep(1)'>1</button>
+                <button class="btn btn-info " onclick='gotoStep(2)'>2</button>
+                <button class="btn btn-info " onclick='gotoStep(3)'>3</button>
+                <button class="btn btn-info " onclick='gotoStep(4)'>4</button>
+                <button class="btn btn-info " onclick='gotoStep(5)'>5</button>
+                <button class="btn btn-info " onclick='gotoStep(6)'>6</button>
+                <button type="button" id="modalBtn" class="btn btn-primary">订单信息</button>
+            </div>
+        </div>
+        <div id="receiveLogTab" class="tab-pane">
+            <table id="reportTable"></table>
+        </div>
+    </div>
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title">物流信息</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="package-status">
+                        <div class="status-box">
+                            <ul class="status-list">
+                                <li>
+                                    <div class="status-content-before">您的订单开始处理</div>
+                                    <div class="status-time-before">2017-08-17 23:31 周四</div>
+                                    <div class="status-line"></div>
+                                </li>
+                                <li>
+                                    <div class="status-content-before">卖家发货</div>
+                                    <div class="status-time-before">2017-08-18 09:11 周五</div>
+                                    <div class="status-line"></div>
+                                </li>
+                                <li>
+                                    <div class="status-content-before">发往深圳中转站</div>
+                                    <div class="status-time-before">2017-08-19 01:21 周六</div>
+                                    <div class="status-line"></div>
+                                </li>
+                                <li>
+                                    <div class="status-content-before">到达深圳</div>
+                                    <div class="status-time-before">2017-08-19 06:21 周六</div>
+                                    <div class="status-line"></div>
+                                </li>
+                                <li>
+                                    <div class="status-content-before">发往潮汕中心</div>
+                                    <div class="status-time-before">2017-08-19 09:21 周六</div>
+                                    <div class="status-line"></div>
+                                </li>
+                                <li class="latest">
+                                    <div class="status-content-latest">快件到达 潮汕中心</div>
+                                    <div class="status-time-latest">2017-08-20 14:16 周日</div>
+                                    <div class="status-line"></div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 <script th:src="@{/js/jquery.min.js}"></script>
 <script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/plugins/bootstrap-table/bootstrap-table.js}"></script>
+<script th:src="@{/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.js}"></script>
+<script th:src="@{/js/plugins/jquery-Step/jquery.step.min.js}"></script>
+<script inline="javascript">
+    $(function () {
+        initStep();
+        initData();
+        $(window).resize(function () {
+            $('#reportTable').bootstrapTable('resetView');
+        });
+       
+        var $modal = $('#myModal');
+        $("#modalBtn").click(function () {
+            $modal.modal();
+        });
+
+        // bootstrap 居中
+        $modal.on('show.bs.modal', function(){
+            var $this = $(this);
+            var $modal_dialog = $this.find('.modal-dialog');
+            // 关键代码，如没将modal设置为 block，则$modala_dialog.height() 为零
+            $this.css('display', 'block');
+            $modal_dialog.css({'margin-top': Math.max(0, ($(window).height() - $modal_dialog.height()) / 2) });
+        });
+    });
+
+    function initData() {
+        $('#reportTable').bootstrapTable({
+            method: 'get',
+            cache: false,
+            height: 530,
+            striped: true,
+            pagination: true,
+            pageSize: 10,
+            pageNumber: 1,
+            pageList: [10, 20, 50, 100, 200, 500],
+            search: true,
+            showRefresh: true,
+            clickToSelect: true,
+            columns: [{
+                field: "user_email",
+                title: "email",
+                align: "center",
+                valign: "middle",
+                sortable: "true"
+            }, {
+                field: "user_company",
+                title: "company",
+                align: "center",
+                valign: "middle",
+                sortable: "true"
+            }, {
+                field: "user_dates",
+                title: "date",
+                align: "center",
+                valign: "middle",
+                sortable: "true"
+            }, {
+                field: "user_lastlogintime",
+                title: "lastlogintime",
+                align: "center",
+                valign: "middle",
+                sortable: "true"
+            }, {
+                field: "user_version",
+                title: "version",
+                align: "center",
+                valign: "middle",
+                sortable: "true"
+            }, {
+                field: "user_isv2",
+                title: "isv2",
+                align: "center",
+                valign: "middle",
+                sortable: "true"
+            }, {
+                field: "userstatus_usertype",
+                title: "usertype",
+                align: "center",
+                valign: "middle",
+                sortable: "true"
+            }, {
+                field: "userstatus_package_id",
+                title: "package_id",
+                align: "center",
+                valign: "middle",
+                sortable: "true"
+            }, {field: "userstatus_end_time", title: "end_time", align: "center", valign: "middle", sortable: "true"}],
+            data: [{
+                "user_email": "20dai.rikon@gmail.com",
+                "user_company": "",
+                "user_dates": "2014-10-13 13:35:51",
+                "user_lastlogintime": "0",
+                "user_version": "0",
+                "user_isv2": "0",
+                "userstatus_usertype": "0",
+                "userstatus_package_id": "100014",
+                "userstatus_end_time": "NULL"
+            }, {
+                "user_email": "20140416@xxxxddffg.com",
+                "user_company": "NULL",
+                "user_dates": "2014-10-13 13:35:51",
+                "user_lastlogintime": "0",
+                "user_version": "1",
+                "user_isv2": "0",
+                "userstatus_usertype": "0",
+                "userstatus_package_id": "100001",
+                "userstatus_end_time": "NULL"
+            }, {
+                "user_email": "20083matsumoto-hs@polus.co.jp",
+                "user_company": "",
+                "user_dates": "2014-10-31 13:02:47",
+                "user_lastlogintime": "1414726074",
+                "user_version": "0",
+                "user_isv2": "1",
+                "userstatus_usertype": "0",
+                "userstatus_package_id": "100014",
+                "userstatus_end_time": "0"
+            }, {
+                "user_email": "20.2.n0.5@gmail.com",
+                "user_company": "",
+                "user_dates": "2014-11-21 11:00:10",
+                "user_lastlogintime": "1416564204",
+                "user_version": "0",
+                "user_isv2": "0",
+                "userstatus_usertype": "0",
+                "userstatus_package_id": "100014",
+                "userstatus_end_time": "0"
+            }, {
+                "user_email": "1st.pocket.wars@gmail.com",
+                "user_company": "",
+                "user_dates": "2014-10-13 13:35:51",
+                "user_lastlogintime": "0",
+                "user_version": "0",
+                "user_isv2": "0",
+                "userstatus_usertype": "0",
+                "userstatus_package_id": "100014",
+                "userstatus_end_time": "NULL"
+            }, {
+                "user_email": "1hourbunko@gmail.com",
+                "user_company": "",
+                "user_dates": "2014-10-18 07:52:40",
+                "user_lastlogintime": "1413618760",
+                "user_version": "0",
+                "user_isv2": "0",
+                "userstatus_usertype": "0",
+                "userstatus_package_id": "100014",
+                "userstatus_end_time": "NULL"
+            }, {
+                "user_email": "1chan.723@gmail.com",
+                "user_company": "",
+                "user_dates": "2014-10-13 13:35:51",
+                "user_lastlogintime": "0",
+                "user_version": "0",
+                "user_isv2": "0",
+                "userstatus_usertype": "0",
+                "userstatus_package_id": "100014",
+                "userstatus_end_time": "NULL"
+            }, {
+                "user_email": "1a2y0a2@gmail.com",
+                "user_company": "",
+                "user_dates": "2014-10-13 13:35:51",
+                "user_lastlogintime": "0",
+                "user_version": "0",
+                "user_isv2": "0",
+                "userstatus_usertype": "0",
+                "userstatus_package_id": "100014",
+                "userstatus_end_time": "NULL"
+            }, {
+                "user_email": "1@1.com",
+                "user_company": "NULL",
+                "user_dates": "2014-10-13 13:35:51",
+                "user_lastlogintime": "0",
+                "user_version": "1",
+                "user_isv2": "0",
+                "userstatus_usertype": "0",
+                "userstatus_package_id": "100001",
+                "userstatus_end_time": "NULL"
+            }, {
+                "user_email": "1@1.cn",
+                "user_company": "NULL",
+                "user_dates": "2014-10-13 13:35:51",
+                "user_lastlogintime": "0",
+                "user_version": "1",
+                "user_isv2": "0",
+                "userstatus_usertype": "0",
+                "userstatus_package_id": "100001",
+                "userstatus_end_time": "NULL"
+            }, {
+                "user_email": "19790220.rie@gmail.com",
+                "user_company": "",
+                "user_dates": "2014-10-13 13:35:51",
+                "user_lastlogintime": "1410998738",
+                "user_version": "0",
+                "user_isv2": "0",
+                "userstatus_usertype": "0",
+                "userstatus_package_id": "100014",
+                "userstatus_end_time": "0"
+            }, {
+                "user_email": "19711216@kamoshita-naoya.jp",
+                "user_company": "xxxx",
+                "user_dates": "2014-10-13 13:35:51",
+                "user_lastlogintime": "0",
+                "user_version": "0",
+                "user_isv2": "0",
+                "userstatus_usertype": "0",
+                "userstatus_package_id": "100014",
+                "userstatus_end_time": "0"
+            }, {
+                "user_email": "19273587@qq.com",
+                "user_company": "",
+                "user_dates": "2014-12-08 09:03:38",
+                "user_lastlogintime": "1418029418",
+                "user_version": "0",
+                "user_isv2": "1",
+                "userstatus_usertype": "0",
+                "userstatus_package_id": "100014",
+                "userstatus_end_time": "0"
+            }, {
+                "user_email": "19267224@qq.com",
+                "user_company": "",
+                "user_dates": "2014-10-24 16:00:09",
+                "user_lastlogintime": "1411444446",
+                "user_version": "1",
+                "user_isv2": "0",
+                "userstatus_usertype": "0",
+                "userstatus_package_id": "100001",
+                "userstatus_end_time": "0"
+            }, {
+                "user_email": "19.rainwater@gmail.com",
+                "user_company": "",
+                "user_dates": "2014-12-08 16:43:04",
+                "user_lastlogintime": "1418056984",
+                "user_version": "0",
+                "user_isv2": "1",
+                "userstatus_usertype": "0",
+                "userstatus_package_id": "100014",
+                "userstatus_end_time": "0"
+            }, {
+                "user_email": "189836234@qq.com",
+                "user_company": "NULL",
+                "user_dates": "2014-10-13 13:35:51",
+                "user_lastlogintime": "0",
+                "user_version": "1",
+                "user_isv2": "0",
+                "userstatus_usertype": "0",
+                "userstatus_package_id": "100001",
+                "userstatus_end_time": "NULL"
+            }, {
+                "user_email": "1874560645@qq.comsara2014",
+                "user_company": "NULL",
+                "user_dates": "2014-12-03 07:25:19",
+                "user_lastlogintime": "0",
+                "user_version": "0",
+                "user_isv2": "1",
+                "userstatus_usertype": "0",
+                "userstatus_package_id": "100014",
+                "userstatus_end_time": "0"
+            }, {
+                "user_email": "18616026485@163.com",
+                "user_company": "",
+                "user_dates": "2014-10-13 13:35:51",
+                "user_lastlogintime": "0",
+                "user_version": "1",
+                "user_isv2": "0",
+                "userstatus_usertype": "0",
+                "userstatus_package_id": "100001",
+                "userstatus_end_time": "NULL"
+            }, {
+                "user_email": "1848837120@qq.com",
+                "user_company": "NULL",
+                "user_dates": "2014-10-20 08:08:59",
+                "user_lastlogintime": "0",
+                "user_version": "0",
+                "user_isv2": "1",
+                "userstatus_usertype": "0",
+                "userstatus_package_id": "100014",
+                "userstatus_end_time": "0"
+            }, {
+                "user_email": "172306759@qq.com",
+                "user_company": "",
+                "user_dates": "2014-10-30 05:09:21",
+                "user_lastlogintime": "1414645761",
+                "user_version": "0",
+                "user_isv2": "1",
+                "userstatus_usertype": "0",
+                "userstatus_package_id": "100014",
+                "userstatus_end_time": "0"
+            }, {
+                "user_email": "16raryo1@gmail.com",
+                "user_company": "PLD",
+                "user_dates": "2014-10-13 13:35:51",
+                "user_lastlogintime": "0",
+                "user_version": "0",
+                "user_isv2": "0",
+                "userstatus_usertype": "0",
+                "userstatus_package_id": "100014",
+                "userstatus_end_time": "NULL"
+            }, {
+                "user_email": "16@ko-zu.com",
+                "user_company": "",
+                "user_dates": "2014-10-28 00:35:48",
+                "user_lastlogintime": "1414456548",
+                "user_version": "0",
+                "user_isv2": "0",
+                "userstatus_usertype": "0",
+                "userstatus_package_id": "100014",
+                "userstatus_end_time": "NULL"
+            }, {
+                "user_email": "163_hanye@163.com",
+                "user_company": "",
+                "user_dates": "2014-10-13 13:35:51",
+                "user_lastlogintime": "0",
+                "user_version": "1",
+                "user_isv2": "0",
+                "userstatus_usertype": "3",
+                "userstatus_package_id": "100012",
+                "userstatus_end_time": "1441036800000"
+            }, {
+                "user_email": "15652394455@163.com",
+                "user_company": "vicky-yang",
+                "user_dates": "2014-10-13 13:35:51",
+                "user_lastlogintime": "1410330193",
+                "user_version": "1",
+                "user_isv2": "0",
+                "userstatus_usertype": "0",
+                "userstatus_package_id": "100001",
+                "userstatus_end_time": "0"
+            }, {
+                "user_email": "1522212167@qq.com",
+                "user_company": "",
+                "user_dates": "2014-12-08 09:03:04",
+                "user_lastlogintime": "1418029384",
+                "user_version": "1",
+                "user_isv2": "0",
+                "userstatus_usertype": "2",
+                "userstatus_package_id": "100010",
+                "userstatus_end_time": "1439045999000"
+            }, {
+                "user_email": "14codemail@gmail.com",
+                "user_company": "",
+                "user_dates": "2014-10-13 13:35:51",
+                "user_lastlogintime": "1408461794",
+                "user_version": "0",
+                "user_isv2": "0",
+                "userstatus_usertype": "0",
+                "userstatus_package_id": "100014",
+                "userstatus_end_time": "NULL"
+            }, {
+                "user_email": "1475_ishi@mail.sofmap.co.jp",
+                "user_company": "株式会社",
+                "user_dates": "2014-12-04 02:50:15",
+                "user_lastlogintime": "1417661415",
+                "user_version": "0",
+                "user_isv2": "1",
+                "userstatus_usertype": "0",
+                "userstatus_package_id": "100014",
+                "userstatus_end_time": "0"
+            }],
+
+            formatNoMatches: function () {
+                return '无符合条件的记录';
+            }
+        });
+
+    }
+
+    function initStep() {
+        $(".steps").step({
+            stepNames: ["提交订单", "支付订单", "平台发货", "确认收货", "完成评价", "订单完成"],
+            initStep: 3
+        })
+    }
+
+    function previousStep() {
+        $(".steps").step("previous");
+    }
+
+    function nextStep() {
+        $(".steps").step("next");
+    }
+
+    function gotoStep(step) {
+        $(".steps").step("goto", step)
+    }
+
+</script>
 </body>
 </html>

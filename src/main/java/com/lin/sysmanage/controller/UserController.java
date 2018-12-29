@@ -29,7 +29,7 @@ public class UserController {
             user.setLoginName("小明" + i);
             // userService.saveUser(user);
         }
-        return "userlist";
+        return "user/userlist";
     }
     
     @Log(descrption = "查询用户信息", operationType = enums.OperationType.SELECT)
