@@ -29,8 +29,7 @@ public class SysWebMvcConfig implements WebMvcConfigurer {
     @Autowired
     BaseInterceptor baseInterceptor;
 
-    /**
-     * 功能描述:
+    /**    
      * 配置静态资源,避免静态资源请求被拦截
      *
      * @date:
@@ -44,17 +43,16 @@ public class SysWebMvcConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/templates/");
     }
 
+    /**
+     * 拦截器
+     * @param registry
+     */
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(baseInterceptor)
                 //addPathPatterns 用于添加拦截规则
                 .addPathPatterns("/**")
                 //excludePathPatterns 用于排除拦截
-                //注意content-path：ding是不用填写的
-                //项目启动测试接口
-                .excludePathPatterns("/")
-                //钉钉回调事件
                 .excludePathPatterns("/user/**")
-                //获取用户详情
                 .excludePathPatterns("/menu/**");
     }
 
