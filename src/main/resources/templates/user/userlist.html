@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
     <!-- bootstrap & fontawesome -->
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link href="https://cdn.bootcss.com/bootstrap-switch/3.3.4/css/bootstrap2/bootstrap-switch.min.css" rel="stylesheet">
     <!-- bootstrap-table 表格插件样式 -->
     <link th:href="@{/js/plugins/bootstrap-table/bootstrap-table.min.css}" rel="stylesheet"/>
 
@@ -27,11 +28,11 @@
     </div>
     <div class="panel-body">
         <form class="form-inline" role="form" id="queryForm">
-            <div class="form-group">
-                <label for="txtTitle">名称:</label>
-                <input type="text" class="form-control" name="txtTitle" id="txtTitle"
-                       placeholder="请输入名称">
-            </div>
+            <div class="form-group has-feedback">
+                <label class="control-label">登录名称</label>
+                <input type="text" class="form-control" placeholder="请输入名称" name="txtTitle" id="txtTitle"/>
+                <i class="glyphicon glyphicon-user form-control-feedback"></i>
+            </div>           
             <div class="form-group">
                 <label for="selMenuType">类型:</label>
                 <select class="form-control" id="selMenuType">
@@ -65,7 +66,7 @@
             </button>
             <button id="btn_authorize" type="button" class="btn btn-info " onclick="selRow()">
                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>批量删除
-            </button>
+            </button>           
         </div>
     </div>
     <div id="receiveLogTab" class="tab-pane">
@@ -83,6 +84,7 @@
 
 <script th:src="@{/js/jquery.min.js}"></script>
 <script th:src="@{/js/bootstrap.min.js}"></script>
+<script src="https://cdn.bootcss.com/bootstrap-switch/3.3.4/js/bootstrap-switch.min.js"></script>
 <!-- bootstrap-table 表格插件 -->
 <script th:src="@{/js/plugins/bootstrap-table/bootstrap-table.js}"></script>
 <script th:src="@{/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.js}"></script>
@@ -97,12 +99,12 @@
     $(function () {
         //1.初始化Table
         InitMainTable();
-        $table.contextmenu({
+       /* $table.contextmenu({
             target: '#context-menu',
-            /* onItem: function (context, e) {
+            /!* onItem: function (context, e) {
                  alert($(e.target).text());
-             }*/
-        });
+             }*!/
+        });*/
     });
 
     //初始化bootstrap-table的内容
@@ -111,7 +113,7 @@
         var queryUrl = '/user/getUserList';
         $table = $('#table').bootstrapTable({
             method: 'post',
-            contentType:'application/x-www-form-urlencoded; charset=UTF-8',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
             dataType: 'json',
             url: queryUrl,
             queryParams: getQueryParams,
@@ -135,8 +137,36 @@
                 {field: "userId", title: "ID", align: "center", visible: false},
                 {field: "userName", title: "登录名称", align: "center"},
                 {field: "loginName", title: "用户名称", align: "center"},
+                {
+                    field : 'status',title : '是否启用', align : 'center',valign : 'middle',
+                    formatter : function(value,row, index) {
+                        var diff = ""; 
+                        if (value=="1"){
+                            diff = "checked";
+                        }
+                        return "<input name='my-checkbox' type='checkbox' data-typename='启禁开关' "+ diff +" >";                      
+                    }
+                },
                 {field: "operate", title: "操作", align: "center", formatter: operateFormatter, edit: false}
-            ]
+            ],
+            onLoadSuccess:function(){
+                $('[name="my-checkbox"]').bootstrapSwitch({
+                    onText:"启用",
+                    offText:"禁用",
+                    onColor:"success",
+                    offColor:"danger",
+                    size:"small",
+                    labelWidth:30,
+                    onSwitchChange:function(event,state){
+                        if(state==true){
+                            console.log('已打开');
+                        }else{
+                            console.log('已关闭');
+                        }
+                    }
+                })
+            }
+            
         });
     };
 

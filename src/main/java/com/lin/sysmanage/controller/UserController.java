@@ -38,7 +38,7 @@ public class UserController {
     public List<User> getUserList(User user) {
         System.out.println("数据测试,user:" + user.getLoginName());
         List<User> userList = userService.selectUserList(user);
-        if(!user.getLoginName().isEmpty()) {
+       /* if(!user.getLoginName().isEmpty()) {
             List<User> userUp = userService.findUserByName(user.getLoginName());
             //userUp.setLoginName("xm-3");
             // userUp.setPassword("123");       
@@ -51,7 +51,7 @@ public class UserController {
         {
             List<User> userMongoDb = userService.findAll(1,100);
             userList.addAll(userMongoDb);
-        }
+        }*/
         return userList;
     }
 
