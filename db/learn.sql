@@ -11,11 +11,56 @@
  Target Server Version : 50723
  File Encoding         : 65001
 
- Date: 07/01/2019 16:48:54
+ Date: 27/02/2019 16:44:08
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for goods
+-- ----------------------------
+DROP TABLE IF EXISTS `goods`;
+CREATE TABLE `goods`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `goods_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '商品名称',
+  `count` int(11) NOT NULL COMMENT '库存',
+  `sale` int(11) NULL DEFAULT NULL COMMENT '已售',
+  `version` int(11) NOT NULL COMMENT '乐观锁，版本号',
+  `version1` int(11) NOT NULL COMMENT '乐观锁，版本号',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of goods
+-- ----------------------------
+INSERT INTO `goods` VALUES (1, 'OPPO R9s', 10, 10, 0, 10);
+
+-- ----------------------------
+-- Table structure for goods_order
+-- ----------------------------
+DROP TABLE IF EXISTS `goods_order`;
+CREATE TABLE `goods_order`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `goods_id` int(11) NOT NULL COMMENT '商品Id',
+  `goods_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '商品名称',
+  `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 343 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of goods_order
+-- ----------------------------
+INSERT INTO `goods_order` VALUES (333, 1, 'OPPO R9s', '2019-02-27 16:15:17');
+INSERT INTO `goods_order` VALUES (334, 1, 'OPPO R9s', '2019-02-27 16:15:18');
+INSERT INTO `goods_order` VALUES (335, 1, 'OPPO R9s', '2019-02-27 16:15:18');
+INSERT INTO `goods_order` VALUES (336, 1, 'OPPO R9s', '2019-02-27 16:15:18');
+INSERT INTO `goods_order` VALUES (337, 1, 'OPPO R9s', '2019-02-27 16:15:18');
+INSERT INTO `goods_order` VALUES (338, 1, 'OPPO R9s', '2019-02-27 16:15:18');
+INSERT INTO `goods_order` VALUES (339, 1, 'OPPO R9s', '2019-02-27 16:15:18');
+INSERT INTO `goods_order` VALUES (340, 1, 'OPPO R9s', '2019-02-27 16:15:18');
+INSERT INTO `goods_order` VALUES (341, 1, 'OPPO R9s', '2019-02-27 16:15:18');
+INSERT INTO `goods_order` VALUES (342, 1, 'OPPO R9s', '2019-02-27 16:15:18');
 
 -- ----------------------------
 -- Table structure for sys_dept
@@ -153,7 +198,7 @@ CREATE TABLE `sys_log`  (
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '操作时间',
   `error_msg` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '错误消息',
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 133 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统日志记录表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 224 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统日志记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_log
@@ -270,6 +315,97 @@ INSERT INTO `sys_log` VALUES (129, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.c
 INSERT INTO `sys_log` VALUES (130, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.MenuController.list()', '{\"order\":\"asc\"}', '1', '查询菜单信息,操作类型=select', '/menu/list', '1015', '2019-01-03 14:59:54', 'Unable to connect to Redis; nested exception is io.lettuce.core.RedisConnectionException: Unable to connect to 127.0.0.1:6379');
 INSERT INTO `sys_log` VALUES (131, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '7', '2019-01-03 15:00:53', '');
 INSERT INTO `sys_log` VALUES (132, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '10', '2019-01-03 15:01:20', '');
+INSERT INTO `sys_log` VALUES (133, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '1856', '2019-01-08 09:42:34', '');
+INSERT INTO `sys_log` VALUES (134, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '36', '2019-01-08 09:43:26', '');
+INSERT INTO `sys_log` VALUES (135, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '55', '2019-01-08 09:45:43', '');
+INSERT INTO `sys_log` VALUES (136, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '6', '2019-01-08 09:45:53', '');
+INSERT INTO `sys_log` VALUES (137, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '7', '2019-01-08 09:46:31', '');
+INSERT INTO `sys_log` VALUES (138, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.MenuController.list()', '{\"order\":\"asc\"}', '1', '查询菜单信息,操作类型=select', '/menu/list', '2011', '2019-01-08 09:46:33', 'Unable to connect to Redis; nested exception is io.lettuce.core.RedisConnectionException: Unable to connect to 127.0.0.1:6379');
+INSERT INTO `sys_log` VALUES (139, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '8', '2019-01-08 09:47:07', '');
+INSERT INTO `sys_log` VALUES (140, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '6', '2019-01-08 09:48:39', '');
+INSERT INTO `sys_log` VALUES (141, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '129', '2019-01-08 09:51:29', '');
+INSERT INTO `sys_log` VALUES (142, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '5', '2019-01-08 09:52:24', '');
+INSERT INTO `sys_log` VALUES (143, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '4', '2019-01-08 09:54:25', '');
+INSERT INTO `sys_log` VALUES (144, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '4', '2019-01-08 09:54:29', '');
+INSERT INTO `sys_log` VALUES (145, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '5', '2019-01-08 09:56:05', '');
+INSERT INTO `sys_log` VALUES (146, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '4', '2019-01-08 09:56:39', '');
+INSERT INTO `sys_log` VALUES (147, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '18', '2019-01-08 09:57:45', '');
+INSERT INTO `sys_log` VALUES (148, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '6', '2019-01-08 09:58:53', '');
+INSERT INTO `sys_log` VALUES (149, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '11', '2019-01-08 09:59:06', '');
+INSERT INTO `sys_log` VALUES (150, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '13', '2019-01-08 09:59:27', '');
+INSERT INTO `sys_log` VALUES (151, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '4', '2019-01-08 09:59:32', '');
+INSERT INTO `sys_log` VALUES (152, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '18', '2019-01-08 10:00:02', '');
+INSERT INTO `sys_log` VALUES (153, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '8', '2019-01-08 10:00:17', '');
+INSERT INTO `sys_log` VALUES (154, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '5', '2019-01-08 10:00:52', '');
+INSERT INTO `sys_log` VALUES (155, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '9', '2019-01-08 10:01:46', '');
+INSERT INTO `sys_log` VALUES (156, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '9', '2019-01-08 10:03:28', '');
+INSERT INTO `sys_log` VALUES (157, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '6', '2019-01-08 10:04:18', '');
+INSERT INTO `sys_log` VALUES (158, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '6', '2019-01-08 10:04:36', '');
+INSERT INTO `sys_log` VALUES (159, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '21', '2019-01-08 10:06:27', '');
+INSERT INTO `sys_log` VALUES (160, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '5', '2019-01-08 10:06:47', '');
+INSERT INTO `sys_log` VALUES (161, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '6', '2019-01-08 10:06:51', '');
+INSERT INTO `sys_log` VALUES (162, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '27', '2019-01-08 10:07:40', '');
+INSERT INTO `sys_log` VALUES (163, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '4', '2019-01-08 10:08:02', '');
+INSERT INTO `sys_log` VALUES (164, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '6', '2019-01-08 10:08:21', '');
+INSERT INTO `sys_log` VALUES (165, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '7', '2019-01-08 10:10:10', '');
+INSERT INTO `sys_log` VALUES (166, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '5', '2019-01-08 10:10:13', '');
+INSERT INTO `sys_log` VALUES (167, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '10', '2019-01-08 10:10:22', '');
+INSERT INTO `sys_log` VALUES (168, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '12', '2019-01-08 10:10:22', '');
+INSERT INTO `sys_log` VALUES (169, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '536', '2019-01-08 11:09:08', '');
+INSERT INTO `sys_log` VALUES (170, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '1694', '2019-01-14 15:59:45', '');
+INSERT INTO `sys_log` VALUES (171, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '5', '2019-01-14 16:03:26', '');
+INSERT INTO `sys_log` VALUES (172, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '3', '2019-01-14 16:03:30', '');
+INSERT INTO `sys_log` VALUES (173, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '176', '2019-01-14 16:06:55', '');
+INSERT INTO `sys_log` VALUES (174, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.MenuController.list()', '{\"order\":\"asc\"}', '1', '查询菜单信息,操作类型=select', '/menu/list', '1650', '2019-01-14 16:07:01', 'Unable to connect to Redis; nested exception is io.lettuce.core.RedisConnectionException: Unable to connect to 127.0.0.1:6379');
+INSERT INTO `sys_log` VALUES (175, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '4', '2019-01-14 16:09:30', '');
+INSERT INTO `sys_log` VALUES (176, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '6', '2019-01-14 16:10:55', '');
+INSERT INTO `sys_log` VALUES (177, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '6', '2019-01-14 16:11:29', '');
+INSERT INTO `sys_log` VALUES (178, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '8', '2019-01-14 16:13:18', '');
+INSERT INTO `sys_log` VALUES (179, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '90', '2019-01-14 16:23:46', '');
+INSERT INTO `sys_log` VALUES (180, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '3', '2019-01-14 16:28:02', '');
+INSERT INTO `sys_log` VALUES (181, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '2', '2019-01-14 16:28:07', '');
+INSERT INTO `sys_log` VALUES (182, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '3', '2019-01-14 16:30:03', '');
+INSERT INTO `sys_log` VALUES (183, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '2', '2019-01-14 16:30:24', '');
+INSERT INTO `sys_log` VALUES (184, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '6', '2019-01-14 16:31:42', '');
+INSERT INTO `sys_log` VALUES (185, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '2', '2019-01-14 16:31:52', '');
+INSERT INTO `sys_log` VALUES (186, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '3', '2019-01-14 16:31:56', '');
+INSERT INTO `sys_log` VALUES (187, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '2', '2019-01-14 16:32:41', '');
+INSERT INTO `sys_log` VALUES (188, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '3', '2019-01-14 16:36:04', '');
+INSERT INTO `sys_log` VALUES (189, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '2', '2019-01-14 16:41:58', '');
+INSERT INTO `sys_log` VALUES (190, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '11', '2019-01-14 16:42:23', '');
+INSERT INTO `sys_log` VALUES (191, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '2', '2019-01-14 16:42:27', '');
+INSERT INTO `sys_log` VALUES (192, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '17', '2019-01-14 16:42:48', '');
+INSERT INTO `sys_log` VALUES (193, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '3', '2019-01-14 16:44:14', '');
+INSERT INTO `sys_log` VALUES (194, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '3', '2019-01-14 16:44:22', '');
+INSERT INTO `sys_log` VALUES (195, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '6', '2019-01-14 16:44:39', '');
+INSERT INTO `sys_log` VALUES (196, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '2', '2019-01-14 16:45:02', '');
+INSERT INTO `sys_log` VALUES (197, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '3', '2019-01-14 16:45:24', '');
+INSERT INTO `sys_log` VALUES (198, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '3', '2019-01-14 16:45:29', '');
+INSERT INTO `sys_log` VALUES (199, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '5', '2019-01-14 16:45:56', '');
+INSERT INTO `sys_log` VALUES (200, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '4', '2019-01-14 16:47:31', '');
+INSERT INTO `sys_log` VALUES (201, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '7', '2019-01-14 16:50:19', '');
+INSERT INTO `sys_log` VALUES (202, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '5', '2019-01-14 16:50:32', '');
+INSERT INTO `sys_log` VALUES (203, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '2', '2019-01-14 16:50:43', '');
+INSERT INTO `sys_log` VALUES (204, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '4', '2019-01-14 16:50:47', '');
+INSERT INTO `sys_log` VALUES (205, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '7', '2019-01-14 16:50:57', '');
+INSERT INTO `sys_log` VALUES (206, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '3', '2019-01-14 16:51:50', '');
+INSERT INTO `sys_log` VALUES (207, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '3', '2019-01-14 16:53:01', '');
+INSERT INTO `sys_log` VALUES (208, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '5', '2019-01-14 16:53:16', '');
+INSERT INTO `sys_log` VALUES (209, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '10', '2019-01-14 16:54:19', '');
+INSERT INTO `sys_log` VALUES (210, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.MenuController.list()', '{\"order\":\"asc\"}', '1', '查询菜单信息,操作类型=select', '/menu/list', '1068', '2019-01-14 16:54:48', 'Unable to connect to Redis; nested exception is io.lettuce.core.RedisConnectionException: Unable to connect to 127.0.0.1:6379');
+INSERT INTO `sys_log` VALUES (211, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.MenuController.list()', '{\"order\":\"asc\"}', '1', '查询菜单信息,操作类型=select', '/menu/list', '1062', '2019-01-14 16:58:48', 'Unable to connect to Redis; nested exception is io.lettuce.core.RedisConnectionException: Unable to connect to 127.0.0.1:6379');
+INSERT INTO `sys_log` VALUES (212, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '3', '2019-01-14 16:58:51', '');
+INSERT INTO `sys_log` VALUES (213, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '4', '2019-01-14 16:59:52', '');
+INSERT INTO `sys_log` VALUES (214, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '3', '2019-01-14 17:01:08', '');
+INSERT INTO `sys_log` VALUES (215, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '3', '2019-01-14 17:06:02', '');
+INSERT INTO `sys_log` VALUES (216, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '2', '2019-01-14 17:06:12', '');
+INSERT INTO `sys_log` VALUES (217, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '2', '2019-01-14 17:06:14', '');
+INSERT INTO `sys_log` VALUES (218, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '2', '2019-01-14 17:07:23', '');
+INSERT INTO `sys_log` VALUES (219, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '4916', '2019-01-24 11:48:23', '');
+INSERT INTO `sys_log` VALUES (220, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.MenuController.list()', '{\"order\":\"asc\"}', '1', '查询菜单信息,操作类型=select', '/menu/list', '1466', '2019-01-24 11:48:30', 'Unable to connect to Redis; nested exception is io.lettuce.core.RedisConnectionException: Unable to connect to 127.0.0.1:6379');
+INSERT INTO `sys_log` VALUES (221, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '1359', '2019-02-25 15:18:58', '');
+INSERT INTO `sys_log` VALUES (222, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '246', '2019-02-25 15:39:44', '');
+INSERT INTO `sys_log` VALUES (223, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '210', '2019-02-25 15:43:26', '');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -523,7 +659,7 @@ CREATE TABLE `sys_user`  (
 -- Records of sys_user
 -- ----------------------------
 INSERT INTO `sys_user` VALUES (1, 'admin', 'admin', 'admin', '1');
-INSERT INTO `sys_user` VALUES (2, 'abel', 'abel', 'abel', '1');
+INSERT INTO `sys_user` VALUES (2, 'abel', 'abel', 'abel', '0');
 
 -- ----------------------------
 -- Table structure for sys_user_role
