@@ -11,7 +11,7 @@
  Target Server Version : 50723
  File Encoding         : 65001
 
- Date: 27/02/2019 16:44:08
+ Date: 28/02/2019 16:23:23
 */
 
 SET NAMES utf8mb4;
@@ -26,15 +26,17 @@ CREATE TABLE `goods`  (
   `goods_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '商品名称',
   `count` int(11) NOT NULL COMMENT '库存',
   `sale` int(11) NULL DEFAULT NULL COMMENT '已售',
+  `goods_img` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '商品图片',
+  `goods_price` decimal(10, 2) NULL DEFAULT NULL COMMENT '商品单价',
+  `goods_detail` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '商品介绍详情',
   `version` int(11) NOT NULL COMMENT '乐观锁，版本号',
-  `version1` int(11) NOT NULL COMMENT '乐观锁，版本号',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of goods
 -- ----------------------------
-INSERT INTO `goods` VALUES (1, 'OPPO R9s', 10, 10, 0, 10);
+INSERT INTO `goods` VALUES (1, 'OPPO R9s', 10, 10, 'https://dsfs.oppo.com/cn/product/p/r9s/specs/spec-01.jpg', 1500.00, 'OPPO R9s前后1600万像素、IMX398传感器、双核对焦、F1.7大光圈,4G运存+64GB内存,3010mAh大电池,充电5分钟通话2小时!', 10);
 
 -- ----------------------------
 -- Table structure for goods_order
@@ -46,7 +48,7 @@ CREATE TABLE `goods_order`  (
   `goods_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '商品名称',
   `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 343 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 369 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of goods_order
@@ -61,6 +63,32 @@ INSERT INTO `goods_order` VALUES (339, 1, 'OPPO R9s', '2019-02-27 16:15:18');
 INSERT INTO `goods_order` VALUES (340, 1, 'OPPO R9s', '2019-02-27 16:15:18');
 INSERT INTO `goods_order` VALUES (341, 1, 'OPPO R9s', '2019-02-27 16:15:18');
 INSERT INTO `goods_order` VALUES (342, 1, 'OPPO R9s', '2019-02-27 16:15:18');
+INSERT INTO `goods_order` VALUES (343, 1, 'OPPO R9s', '2019-02-28 11:45:18');
+INSERT INTO `goods_order` VALUES (344, 1, 'OPPO R9s', '2019-02-28 11:46:33');
+INSERT INTO `goods_order` VALUES (345, 1, 'OPPO R9s', '2019-02-28 11:46:57');
+INSERT INTO `goods_order` VALUES (346, 1, 'OPPO R9s', '2019-02-28 11:46:58');
+INSERT INTO `goods_order` VALUES (347, 1, 'OPPO R9s', '2019-02-28 13:45:00');
+INSERT INTO `goods_order` VALUES (348, 1, 'OPPO R9s', '2019-02-28 13:45:07');
+INSERT INTO `goods_order` VALUES (349, 1, 'OPPO R9s', '2019-02-28 14:26:42');
+INSERT INTO `goods_order` VALUES (350, 1, 'OPPO R9s', '2019-02-28 14:26:45');
+INSERT INTO `goods_order` VALUES (351, 1, 'OPPO R9s', '2019-02-28 14:26:46');
+INSERT INTO `goods_order` VALUES (352, 1, 'OPPO R9s', '2019-02-28 14:26:46');
+INSERT INTO `goods_order` VALUES (353, 1, 'OPPO R9s', '2019-02-28 14:26:47');
+INSERT INTO `goods_order` VALUES (354, 1, 'OPPO R9s', '2019-02-28 14:26:48');
+INSERT INTO `goods_order` VALUES (355, 1, 'OPPO R9s', '2019-02-28 14:26:48');
+INSERT INTO `goods_order` VALUES (356, 1, 'OPPO R9s', '2019-02-28 14:26:49');
+INSERT INTO `goods_order` VALUES (357, 1, 'OPPO R9s', '2019-02-28 14:26:50');
+INSERT INTO `goods_order` VALUES (358, 1, 'OPPO R9s', '2019-02-28 14:26:51');
+INSERT INTO `goods_order` VALUES (359, 1, 'OPPO R9s', '2019-02-28 15:21:51');
+INSERT INTO `goods_order` VALUES (360, 1, 'OPPO R9s', '2019-02-28 15:21:54');
+INSERT INTO `goods_order` VALUES (361, 1, 'OPPO R9s', '2019-02-28 15:21:57');
+INSERT INTO `goods_order` VALUES (362, 1, 'OPPO R9s', '2019-02-28 15:22:00');
+INSERT INTO `goods_order` VALUES (363, 1, 'OPPO R9s', '2019-02-28 15:24:42');
+INSERT INTO `goods_order` VALUES (364, 1, 'OPPO R9s', '2019-02-28 15:34:09');
+INSERT INTO `goods_order` VALUES (365, 1, 'OPPO R9s', '2019-02-28 15:34:12');
+INSERT INTO `goods_order` VALUES (366, 1, 'OPPO R9s', '2019-02-28 15:34:15');
+INSERT INTO `goods_order` VALUES (367, 1, 'OPPO R9s', '2019-02-28 15:34:18');
+INSERT INTO `goods_order` VALUES (368, 1, 'OPPO R9s', '2019-02-28 15:34:20');
 
 -- ----------------------------
 -- Table structure for sys_dept
@@ -198,7 +226,7 @@ CREATE TABLE `sys_log`  (
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '操作时间',
   `error_msg` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '错误消息',
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 224 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统日志记录表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 226 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统日志记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_log
@@ -406,6 +434,8 @@ INSERT INTO `sys_log` VALUES (220, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.c
 INSERT INTO `sys_log` VALUES (221, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '1359', '2019-02-25 15:18:58', '');
 INSERT INTO `sys_log` VALUES (222, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '246', '2019-02-25 15:39:44', '');
 INSERT INTO `sys_log` VALUES (223, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '210', '2019-02-25 15:43:26', '');
+INSERT INTO `sys_log` VALUES (224, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.UserController.getUserList()', '', '0', '查询用户信息,操作类型=select', '/user/getUserList', '928', '2019-02-28 15:45:00', '');
+INSERT INTO `sys_log` VALUES (225, 1, 'admin', '127.0.0.1', 'com.lin.sysmanage.controller.MenuController.list()', '{\"order\":\"asc\"}', '0', '查询菜单信息,操作类型=select', '/menu/list', '746', '2019-02-28 15:45:03', '');
 
 -- ----------------------------
 -- Table structure for sys_menu
