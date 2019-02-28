@@ -10,14 +10,14 @@ public interface IMenuService {
      *
      * @return 所有菜单信息
      */
-    public List<Menu> selectMenuAll();
+     List<Menu> selectMenuAll();
 
     /**
      * 查询系统正常显示菜单（不含按钮）
      *
      * @return 菜单列表
      */
-    public List<Menu> selectMenuNormalAll();
+     List<Menu> selectMenuNormalAll();
 
     /**
      * 根据菜单ID查询信息
@@ -25,7 +25,7 @@ public interface IMenuService {
      * @param menuId 菜单ID
      * @return 菜单信息
      */
-    public Menu selectMenuById(Long menuId);
+     Menu selectMenuById(Long menuId);
 
 
     /**
@@ -34,9 +34,9 @@ public interface IMenuService {
      * @param menu 菜单信息
      * @return 菜单列表
      */
-    public List<Menu> selectMenuList(Menu menu);
+     List<Menu> selectMenuList(Menu menu);
 
-    public List<Menu> findMenuListByPage(int currentPage, int pageSize);
+     List<Menu> findMenuListByPage(int currentPage, int pageSize);
 
 
 }

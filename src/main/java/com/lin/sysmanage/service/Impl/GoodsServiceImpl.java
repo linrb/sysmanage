@@ -6,6 +6,8 @@ import com.lin.sysmanage.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class GoodsServiceImpl implements GoodsService {
     @Autowired
@@ -19,5 +21,10 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public int updateGoods(GoodsEntity goodsEntity) {
         return goodsMapper.updateGoods( goodsEntity );
+    }
+
+    @Override
+    public List<GoodsEntity> getGoodsList() {
+        return goodsMapper.getGoodsList();
     }
 }

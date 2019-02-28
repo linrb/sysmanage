@@ -1,40 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.lin.sysmanage.dao.GoodsMapper">	
-	<update id="updateGoods">
-		UPDATE goods
-		<set>
-			<if test="goodsName != null">`goods_name` = #{goodsName}, </if>
-			<if test="count != null">`count` = #{count}, </if>
-			<if test="sale != null">`sale` = #{sale}, </if>
-			<if test="version != null">`version` = #{version}</if>
-		</set>
-		WHERE
-		id = #{id}
-	</update>
+<mapper namespace="com.lin.sysmanage.dao.GoodsMapper">
+    <resultMap id="BaseResultMap" type="com.lin.sysmanage.entity.GoodsEntity">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="goods_name" jdbcType="VARCHAR" property="goodsName"/>
+        <result column="goods_img" jdbcType="VARCHAR" property="goodsImg"/>
+        <result column="goods_price" jdbcType="DECIMAL" property="goodsPrice"/>
+        <result column="goods_detail" jdbcType="VARCHAR" property="goodsDetail"/>
+        <result column="count" jdbcType="INTEGER" property="count"/>
+        <result column="sale" jdbcType="INTEGER" property="sale"/>
+        <result column="version" jdbcType="INTEGER" property="version"/>
+    </resultMap>
 
-	<update id="updateGoodsByOptimistic" parameterType="com.lin.sysmanage.entity.GoodsEntity">
-		update goods
-		<set>
-			sale = sale + 1,
-			version1 = version1 + 1,
-		</set>
-		WHERE id = #{id,jdbcType=INTEGER}
-		AND version1 = #{version1,jdbcType=INTEGER}
-	</update>
-	<select id="getGoodsById" resultType="com.lin.sysmanage.entity.GoodsEntity">
-		SELECT
-			`id`, 
-			`goods_name` as 'goodsName', 
-			`count`, 
-			`sale`, 
-			`version`,
-			`version1`
-		FROM
-			goods
-		WHERE
-			id = #{id}
+    <sql id="Base_Column_List">
+      id, goods_name, goods_img, goods_price, count,sale,version
+    </sql>
+    <update id="updateGoods">
+        UPDATE goods
+        <set>
+            <if test="goodsName != null">`goods_name` = #{goodsName},</if>
+            <if test="count != null">`count` = #{count},</if>
+            <if test="sale != null">`sale` = #{sale},</if>
+            <if test="version != null">`version` = #{version}</if>
+        </set>
+        WHERE
+        id = #{id}
+    </update>
 
-	</select>
+    <update id="updateGoodsByOptimistic" parameterType="com.lin.sysmanage.entity.GoodsEntity">
+        update goods
+        <set>
+            sale = sale + 1,
+            version = version + 1,
+        </set>
+        WHERE id = #{id,jdbcType=INTEGER}
+        AND version = #{version,jdbcType=INTEGER}
+    </update>
+
+    <select id="getGoodsById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        goods
+        WHERE
+        id = #{id}
+    </select>
+    <select id="getGoodsList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        goods
+    </select>
 </mapper>

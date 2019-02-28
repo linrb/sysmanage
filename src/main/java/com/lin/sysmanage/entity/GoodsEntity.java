@@ -1,5 +1,7 @@
 package com.lin.sysmanage.entity;
 
+import java.math.BigDecimal;
+
 public class GoodsEntity extends BaseEntity {
     /**
      * ID
@@ -26,7 +28,20 @@ public class GoodsEntity extends BaseEntity {
      */
     private Integer version;
 
-    private Integer version1;
+    /**
+     * 商品图片
+     */
+    private String goodsImg;
+
+    /**
+     * 商品单价
+     */
+    private BigDecimal goodsPrice;
+
+    /**
+     * 商品介绍
+     */
+    private String goodsDetail;
 
     public GoodsEntity() {
         super();
@@ -112,20 +127,28 @@ public class GoodsEntity extends BaseEntity {
         return version;
     }
 
-    /**
-     * setter for version
-     *
-     * @param version1
-     */
-    public void setVersion1(Integer version1) {
-        this.version1 = version1;
+    public String getGoodsImg() {
+        return goodsImg;
     }
 
-    /**
-     * getter for version1
-     */
-    public Integer getVersion1() {
-        return version1;
+    public void setGoodsImg(String goodsImg) {
+        this.goodsImg = goodsImg;
+    }
+
+    public BigDecimal getGoodsPrice() {
+        return goodsPrice;
+    }
+
+    public void setGoodsPrice(BigDecimal goodsPrice) {
+        this.goodsPrice = goodsPrice;
+    }
+
+    public String getGoodsDetail() {
+        return goodsDetail;
+    }
+
+    public void setGoodsDetail(String goodsDetail) {
+        this.goodsDetail = goodsDetail;
     }
 
 }
