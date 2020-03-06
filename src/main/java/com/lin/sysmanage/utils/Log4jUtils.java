@@ -5,7 +5,6 @@ import org.apache.log4j.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-;
 
 public class Log4jUtils {
 

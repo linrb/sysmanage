@@ -1,6 +1,7 @@
 package com.lin.sysmanage.aspect;
 
-import com.alibaba.fastjson.JSON;
+
+import com.google.gson.Gson;
 import com.lin.sysmanage.entity.SysLogEntity;
 import com.lin.sysmanage.service.ISysLogService;
 import com.lin.sysmanage.utils.Log4jUtils;
@@ -77,6 +78,7 @@ public class LogAspect {
      */
     private void saveLog(ProceedingJoinPoint joinPoint, String status, long time, String errMsg) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        Gson gson = new Gson();
         //请求的IP
         String ip = getIP( request );
         //请求的参数（两种方式）
@@ -90,7 +92,7 @@ public class LogAspect {
         Map<String, String> resMap = transformParameterMap( params, false );
 
         if (resMap != null && resMap.size() > 0) {
-            jsonParams = JSON.toJSONString( resMap );
+            jsonParams = gson.toJson( resMap );
         }
         // 获取请求的类名
         String className = joinPoint.getSignature().getDeclaringTypeName();
